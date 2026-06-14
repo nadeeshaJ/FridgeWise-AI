@@ -2,31 +2,45 @@
 
 A hybrid recipe recommendation system for food waste reduction using expiry dates, fridge ingredients, nutrition data, and personalized recipe suggestions.
 
-**Course:** Recommender Systems group assignment  
-**Goal:** Design, develop, and evaluate a hybrid recommender with baseline + improved models, offline evaluation (MAP, NDCG), cold-start handling, and Generative AI comparison.
+**Module:** B9AI103 Recommender Systems (CA ONE — 60%)  
+**Pitch:** FridgeWise AI combines collaborative filtering and ingredient-based matching, re-ranked by expiry urgency and nutrition data, to reduce food waste — with cold-start fallbacks for new users and unfamiliar ingredients.
+
+---
+
+## Assignment Alignment
+
+| Part | Weight | Focus | Status |
+|------|--------|-------|--------|
+| **Part 1** — System design & implementation | 35% | Two+ distinct recommenders, preprocessing, hybrid as improved model | Implemented |
+| **Part 2** — Evaluation & cold-start | 40% | MAP, NDCG, offline evaluation, cold-start mitigation | Pipeline ready; tune & report |
+| **Part 3** — GenAI analysis & presentation | 25% | Compare GenAI vs traditional RS; 10–15 min presentation | Report/presentation TBD |
+
+**Deliverables:** Group report (max 3,000 words, PDF on Moodle), code repository, group presentation (10–15 minutes).
+
+**AI use (DBS policy):** AI may be used for brainstorming, structuring, and planning. The **final submitted report must be written in your group's own words** and properly referenced. Use this README as an internal blueprint only.
 
 ---
 
 ## Project Overview
 
-FridgeWise AI recommends recipes by considering:
+FridgeWise AI recommends recipes using:
 
-1. Ingredients currently available in the user's fridge
-2. Ingredients closest to expiry (food waste reduction)
-3. User preferences and past recipe ratings
-4. Nutrition information from barcode/product data (Open Food Facts)
-5. Dietary and allergen constraints
-6. Cold-start cases (new users, recipes, products, unfamiliar ingredients)
+1. **Food.com** — recipes, ratings, and offline evaluation (core dataset)
+2. **Fridge context** — synthetic inventory for the app demo; user profile ingredients for content-based evaluation
+3. **Expiry priority** — re-ranking signal from the Food Expiry Tracker dataset
+4. **Nutrition / barcode data** — Open Food Facts for allergens and nutrition-aware ranking in the app
 
-### Datasets
+### Data roles (simplified)
 
-| Source | Purpose |
-|--------|---------|
-| [Food.com Recipes & Interactions](https://www.kaggle.com/datasets/shuyangli94/food-com-recipes-and-user-interactions) | Recipe database, content-based + collaborative filtering, offline evaluation |
-| [Food Expiry Tracker](https://www.kaggle.com/datasets/prekshad2166/food-expiry-tracker) | Expiry prioritisation, simulated fridge inventory |
-| [Open Food Facts API](https://world.openfoodfacts.org/data) | Barcode lookup, nutrition, allergens, Nutri-Score |
+| Source | Role in project |
+|--------|-----------------|
+| [Food.com](https://www.kaggle.com/datasets/shuyangli94/food-com-recipes-and-user-interactions) | **Core** — CF, content-based features, train/val/test evaluation |
+| [Food Expiry Tracker](https://www.kaggle.com/datasets/prekshad2166/food-expiry-tracker) | **Supporting** — expiry priority logic and report discussion |
+| [Open Food Facts API](https://openfoodfacts.github.io/openfoodfacts-server/api/tutorial-off-api/) | **Supporting** — barcode screen, nutrition score, allergen filtering |
 
-**Integration note:** The three datasets do not share a common ID. Integration uses ingredient-level matching and product-to-ingredient mapping after cleaning, lowercasing, normalising, and standardising ingredient names.
+**Integration note:** Datasets share no common ID. Integration uses cleaned, normalised ingredient names and product-to-ingredient mapping (`src/preprocessing/ingredient_utils.py`).
+
+**Report framing:** *"Food.com drives offline evaluation; expiry and nutrition are re-ranking signals in the hybrid model and Flutter demo."*
 
 ---
 
@@ -34,36 +48,39 @@ FridgeWise AI recommends recipes by considering:
 
 ```mermaid
 flowchart TB
-    subgraph Data["Phase 1–2: Data Layer"]
-        FC[Food.com]
+    subgraph Data["Data Layer"]
+        FC[Food.com train/val/test]
         EX[Expiry Tracker]
         OFF[Open Food Facts]
         FC --> Clean[Cleaning & Normalisation]
         EX --> Clean
         OFF --> Clean
         Clean --> DB[(fridge_recommender.db)]
-        Clean --> CSV[7 CSV files]
     end
 
-    subgraph Models["Phase 3–4: Models"]
-        CB[Baseline: Content-Based]
-        CF[Collaborative Filtering]
-        HY[Hybrid Recommender]
-        DB --> CB
-        DB --> CF
+    subgraph Models["Recommenders"]
+        CB[Baseline: Content-Based TF-IDF]
+        CF[Collaborative Filtering SVD/KNN]
+        HY[Hybrid Recommender - improved]
         CB --> HY
         CF --> HY
     end
 
-    subgraph Eval["Phase 5: Evaluation"]
-        HY --> Metrics[P@K, R@K, MAP@K, NDCG@K, RMSE]
+    subgraph Eval["Evaluation"]
+        HY --> Metrics[MAP, NDCG, P@K, R@K, RMSE]
         CB --> Metrics
         CF --> Metrics
     end
 
-    subgraph Report["Phase 6–7: Report & Demo"]
-        Metrics --> ReportDoc[3,000-word report]
-        HY --> Flutter[Optional Flutter app]
+    subgraph Demo["Demo Layer"]
+        API[FastAPI backend]
+        FL[Flutter app]
+        HY --> API --> FL
+    end
+
+    subgraph Deliverables["Deliverables"]
+        Metrics --> Report[3000-word report]
+        Report --> Pres[Presentation]
     end
 ```
 
@@ -73,163 +90,48 @@ flowchart TB
 
 ```
 FridgeWise-AI/
-├── data/
-│   ├── raw/              # Downloaded Kaggle datasets (gitignored)
-│   ├── processed/        # 7 clean CSV files
-│   └── fridge_recommender.db
-├── src/
-│   ├── preprocessing/
-│   │   ├── ingredient_utils.py    # normalisation, synonym mapping
-│   │   ├── clean_recipes.py
-│   │   ├── clean_interactions.py
-│   │   ├── clean_expiry.py
-│   │   ├── fetch_open_food_facts.py
-│   │   ├── build_fridge_inventory.py
-│   │   └── build_integrated_dataset.py
-│   ├── models/
-│   │   ├── content_based.py
-│   │   ├── collaborative_filtering.py
-│   │   └── hybrid_recommender.py
-│   ├── evaluation/
-│   │   ├── metrics.py
-│   │   └── evaluate.py
-│   └── cold_start/
-│       └── ingredient_mappings.py
-├── notebooks/
-│   ├── 01_exploration.ipynb
-│   └── 02_evaluation_results.ipynb
+├── api/
+│   └── main.py                 # FastAPI backend for Flutter
 ├── config/
-│   └── config.yaml
+│   └── config.yaml             # Paths, weights, evaluation settings
+├── data/
+│   ├── raw/                    # Kaggle downloads (gitignored)
+│   ├── processed/              # Clean CSVs + evaluation_results.json
+│   └── fridge_recommender.db
+├── flutter_app/                # Flutter prototype (demo only)
+│   └── lib/
+├── scripts/
+│   ├── build_dataset.py        # Full data pipeline
+│   ├── train_and_evaluate.py   # Offline evaluation
+│   ├── download_data.py
+│   └── verify_database.py
+├── src/
+│   ├── preprocessing/          # Cleaning, integration, ingredient utils
+│   ├── models/                 # Content-based, CF, hybrid
+│   └── evaluation/             # MAP, NDCG, metrics
 ├── requirements.txt
-├── README.md
-└── report/               # Outline / figures (final report written in own words)
+└── report/                     # Figures & outline (report in own words)
 ```
 
 ---
 
-## Expected Data Outputs
+## Recommender Models
 
-### Clean CSV files
+### Model 1: Baseline — Content-Based Filtering
 
-1. `clean_recipes.csv`
-2. `clean_interactions.csv`
-3. `clean_expiry_items.csv`
-4. `clean_open_food_products.csv`
-5. `user_fridge_inventory.csv`
-6. `recipe_ingredient_features.csv`
-7. `final_recommendation_dataset.csv`
+- TF-IDF on `cleaned_ingredients` + ingredient overlap score
+- Uses user profile ingredients (liked recipes from train) or fridge inventory (app demo)
+- **Purpose:** Baseline to beat; strong for cold-start and new recipes
 
-### SQLite database: `fridge_recommender.db`
+### Model 2: Collaborative Filtering
 
-Tables: `recipes`, `interactions`, `expiry_items`, `open_food_products`, `user_fridge_inventory`, `recipe_ingredient_features`, `final_recommendation_dataset`
+- Matrix factorisation (Surprise **SVD**) on Food.com train interactions
+- **Alternative:** item-based **KNN** — often ranks held-out items better on leave-one-out test sets
+- Output: `predicted_rating`; evaluate **RMSE** on validation set
 
----
+### Model 3: Hybrid Recommender (Improved)
 
-## Build Plan (Step by Step)
-
-### Phase 0: Setup
-
-| Step | Task | Output |
-|------|------|--------|
-| 0.1 | Create `requirements.txt` (pandas, numpy, scikit-learn, surprise, requests, etc.) | Dependencies |
-| 0.2 | Download Food.com + Expiry Tracker from Kaggle | `data/raw/` |
-| 0.3 | Set up project folders and `.gitignore` for raw data | Clean repo |
-| 0.4 | Define `ingredient_utils.py` with normalisation rules | Shared utility |
-
-Ingredient normalisation is the foundation — build this first:
-
-- Lowercase, strip punctuation, remove extra spaces
-- Lemmatisation (`tomatoes` → `tomato`)
-- Synonym dictionary (`cheddar cheese` → `cheese`, `Greek yogurt` → `yogurt`)
-- Cold-start mappings (`tempeh` → `tofu`, `cassava` → `potato`, etc.)
-
----
-
-### Phase 1: Clean Individual Datasets
-
-#### Step 1.1 — `clean_recipes.csv` → `recipes` table
-
-- Load `RAW_recipes.csv`
-- Parse ingredient lists (stringified Python lists)
-- Apply normalisation → `cleaned_ingredients`
-- Extract `dietary_tags`, `cuisine_tags`, `difficulty_level` from tags
-- **Checkpoint:** spot-check 20 recipes manually
-
-#### Step 1.2 — `clean_interactions.csv` → `interactions` table
-
-- Filter valid ratings (1–5), drop nulls
-- Inner join on valid `recipe_id`
-- Generate `interaction_id`
-- **Checkpoint:** interaction count before/after filtering
-
-#### Step 1.3 — `clean_expiry_items.csv` → `expiry_items` table
-
-- Clean ingredient names
-- Compute `days_to_expiry` and `expiry_priority_score`:
-
-  | days_to_expiry | expiry_priority_score |
-  |----------------|----------------------|
-  | ≤ 0 | 1.0 |
-  | ≤ 2 | 0.9 |
-  | ≤ 5 | 0.7 |
-  | ≤ 10 | 0.5 |
-  | otherwise | 0.2 |
-
-#### Step 1.4 — `clean_open_food_products.csv` → `open_food_products` table
-
-- Fetch ~50–100 products from Open Food Facts API (cache responses locally)
-- Map to `generic_ingredient_name` (e.g. Cheddar Cheese → cheese)
-- Compute `nutrition_score` (start 1.0; subtract for high sugar/sat fat/salt; add for protein/fibre; clamp 0–1)
-
-#### Step 1.5 — `user_fridge_inventory.csv` → `user_fridge_inventory` table
-
-- Synthetically generate 20–50 sample users
-- Use common Food.com ingredients + cold-start items (miso, tempeh, kimchi, etc.)
-- Link some rows to Open Food Facts barcodes
-
----
-
-### Phase 2: Integration & Feature Engineering
-
-#### Step 2.1 — `recipe_ingredient_features.csv`
-
-- Explode recipes to one row per ingredient
-- Match with expiry and nutrition data via `cleaned_ingredient_name`
-- Add `is_expiry_matched`, `avg_expiry_priority_score`, `avg_nutrition_score`
-
-#### Step 2.2 — `final_recommendation_dataset.csv`
-
-For each `(user_id, recipe_id)` pair:
-
-- `fridge_ingredients`, `matched_ingredients`, `missing_ingredients`
-- `ingredient_match_score` = matched / total recipe ingredients
-- Aggregated expiry + nutrition scores
-- `predicted_rating`, `final_hybrid_score`, `cold_start_flag`
-
-#### Step 2.3 — SQLite database
-
-- Load all 7 tables into `fridge_recommender.db`
-- Add indexes on `recipe_id`, `user_id`, `cleaned_ingredient_name`
-
-**Prototype tip:** Use a subset of Food.com (e.g. top 10k recipes by interaction count) during development.
-
----
-
-### Phase 3: Recommender Models
-
-#### Model 1: Baseline Content-Based Filtering
-
-- TF-IDF or CountVectorizer on `cleaned_ingredients` (+ optional tags)
-- Cosine similarity between fridge ingredients and recipe ingredients
-- Rank by `ingredient_match_score`
-
-#### Model 2: Collaborative Filtering
-
-- Train/test split on interactions (80/20)
-- SVD / matrix factorisation (Surprise library)
-- Output `predicted_rating`; evaluate RMSE
-
-#### Model 3: Hybrid Recommender (Improved)
+Combines content, CF, expiry, and nutrition:
 
 ```
 final_hybrid_score =
@@ -239,7 +141,7 @@ final_hybrid_score =
 + 0.15 * nutrition_score
 ```
 
-**Cold-start fallback** (new user, no CF prediction):
+**Cold-start fallback** (demo users with no Food.com history, e.g. user `10001`):
 
 ```
 final_hybrid_score =
@@ -248,118 +150,189 @@ final_hybrid_score =
 + 0.20 * nutrition_score
 ```
 
----
-
-### Phase 4: Evaluation
-
-| Metric | Applies to |
-|--------|------------|
-| Precision@K, Recall@K | All three models |
-| MAP@K, NDCG@K | All three models |
-| RMSE | CF + Hybrid |
-
-**Protocol:**
-
-1. Split interactions → train / test
-2. Train CF on train set
-3. For each test user, generate top-N recommendations
-4. Compare against held-out positive interactions (rating ≥ 4)
-5. Evaluate at K = 5 and K = 10
-6. Compare: Baseline vs CF vs Hybrid
+**App variant:** CF top-N candidates re-ranked by fridge match, expiry urgency, and nutrition (see `src/models/hybrid_recommender.py`).
 
 ---
 
-### Phase 5: Cold-Start & Robustness
+## Evaluation Plan
 
-| Scenario | Detection | Fallback |
-|----------|-----------|----------|
-| New user | No interactions | Cold-start hybrid formula |
-| New recipe | No interactions | Content-based only |
-| New barcode product | Unknown barcode | Map via Open Food Facts → generic ingredient |
-| Unfamiliar ingredient | Not in training vocab | Category/cuisine similarity + manual mapping |
+### Splits
 
-**Scalability / robustness topics for report:**
+Use the provided Food.com splits (not a random 80/20):
 
-- Reduce dataset size for prototype development
-- Sparse matrices for user-item interactions
-- Cache Open Food Facts API responses
-- Normalise ingredient names to reduce mismatch errors
-- Default/average scores for missing nutrition values
+| File | Purpose |
+|------|---------|
+| `interactions_train.csv` | Train CF and content profiles |
+| `interactions_validation.csv` | Tune hyperparameters (SVD vs KNN, hybrid weights) |
+| `interactions_test.csv` | Final reported metrics |
 
----
+Cleaned outputs: `data/processed/clean_interactions_{train,validation,test}.csv`
 
-### Phase 6: Report & Presentation
+### Metrics (assignment requirement)
 
-Recommended report structure (~3,000 words):
+| Metric | Models |
+|--------|--------|
+| **MAP@K, NDCG@K** | Content, CF, Hybrid (required) |
+| Precision@K, Recall@K | All three |
+| RMSE | CF (on validation) |
 
-1. Introduction
-2. Problem Statement
-3. Dataset Description
-4. Data Preprocessing and Feature Engineering
-5. System Design
-6. Baseline Content-Based Recommender
-7. Collaborative Filtering Recommender
-8. Hybrid Recommender
-9. Evaluation Methodology
-10. Results and Comparison
-11. Cold-Start Mitigation
-12. Generative AI Analysis
-13. Responsible AI and Limitations
-14. Conclusion
-15. References
-16. Appendix
+Evaluate at **K = 5** and **K = 10**. Compare **relative improvement** (Hybrid vs baseline), not only absolute scores.
 
-**Generative AI section** (discussion only — no implementation required):
+### Protocol
 
-- VAE-based recommender (latent taste preferences)
-- GAN-based recipe generation (creative combinations from leftovers)
-- LLM-based assistant (explanations, substitutions, dietary adaptation)
-- GenAI for unfamiliar ingredients (cultural substitutions)
+1. Train CF on **train**; tune on **validation**
+2. For each test user, rank held-out positive recipes (rating ≥ 4) against sampled negatives (leave-one-out style test set)
+3. Generate top-N recommendations per model
+4. Report MAP@K and NDCG@K on **test**
+5. Save results to `data/processed/evaluation_results.json`
 
-Compare traditional ranking vs generative approaches; note hallucination, nutrition inaccuracy, and safety risks.
-
-**Responsible AI topics:** allergen safety, nutrition misinformation, cultural bias, privacy, over-personalisation, transparency.
+```bash
+python scripts/train_and_evaluate.py
+```
 
 ---
 
-### Phase 7: Optional Flutter Prototype
+## Cold-Start Strategy
 
-If time allows — demonstration layer only; recommender + evaluation + report remain priority.
+Implement and **demo** two scenarios; describe others in the report.
+
+| Scenario | Demo / implementation | Fallback |
+|----------|----------------------|----------|
+| **New user** | Flutter demo user `10001` (no Food.com history) | Cold-start hybrid formula (no CF term) |
+| **Unfamiliar ingredient** | Add `miso`, `tempeh`, `kimchi` to fridge | Synonym mapping in `ingredient_utils.py` |
+| New recipe | Report only | Content-based features |
+| New barcode product | Barcode screen + cached OFF lookup | Map product → generic ingredient |
+
+---
+
+## Data Pipeline
+
+### Build all datasets
+
+```bash
+pip install -r requirements.txt
+python scripts/build_dataset.py
+python scripts/verify_database.py
+```
+
+### Key outputs
+
+| Output | Description |
+|--------|-------------|
+| `clean_recipes.csv` | Normalised recipes with dietary/cuisine tags |
+| `clean_interactions_{train,val,test}.csv` | Official evaluation splits |
+| `clean_expiry_items.csv` | Expiry items (one-hot schema → ingredients) |
+| `clean_open_food_products.csv` | Cached Open Food Facts sample |
+| `user_fridge_inventory.csv` | Synthetic fridges for demo users `10001`–`10040` |
+| `recipe_ingredient_features.csv` | Recipe–ingredient bridge with expiry/nutrition features |
+| `final_recommendation_dataset.csv` | Modelling dataset with hybrid scores |
+| `fridge_recommender.db` | SQLite with all tables |
+
+### Expiry priority score
+
+| days_to_expiry | expiry_priority_score |
+|----------------|----------------------|
+| ≤ 0 | 1.0 |
+| ≤ 2 | 0.9 |
+| ≤ 5 | 0.7 |
+| ≤ 10 | 0.5 |
+| otherwise | 0.2 |
+
+---
+
+## Flutter Prototype (Demo Only)
+
+Thin demonstration layer — do not let this block the report or evaluation.
 
 | Screen | Features |
 |--------|----------|
-| Fridge Inventory | Add ingredient, expiry date, quantity, barcode |
-| Barcode/Nutrition | Scan/enter barcode; show nutrition and allergens |
-| Recipe Recommendations | Top recipes, match %, expiring ingredients used, nutrition score, missing ingredients |
-| Recipe Detail | Ingredients, steps, cooking time, "Why this recipe was recommended" |
+| Home | Select demo user |
+| Fridge Inventory | Ingredients, expiry dates, colour-coded urgency |
+| Recommendations | Top recipes, match %, expiry/nutrition scores |
+| Recipe Detail | Ingredients, steps, "Why recommended" |
+| Barcode / Nutrition | Enter barcode; show nutrition and allergens |
+
+### Run the demo
+
+**Terminal 1 — API:**
+```bash
+python api/main.py
+```
+
+**Terminal 2 — Flutter** (Android emulator uses `http://10.0.2.2:8000`):
+```bash
+cd flutter_app
+flutter pub get
+flutter run
+```
+
+Record a **2-minute screen recording** as a backup if the live demo fails.
 
 ---
 
-## Build Order Summary
+## Report Structure (Recommended)
 
-| Order | Step | Why first |
-|-------|------|-----------|
-| 1 | Project setup + `requirements.txt` + folder structure | Foundation |
-| 2 | `ingredient_utils.py` (normalisation + synonyms) | Everything depends on this |
-| 3 | Clean recipes + interactions | Core Food.com data |
-| 4 | Clean expiry + fetch Open Food Facts sample | Secondary sources |
-| 5 | Synthetic fridge inventory | Enables end-to-end demo |
-| 6 | Bridge + final dataset + SQLite | Single modelling source |
-| 7 | Baseline content-based model | Quick win, baseline metrics |
-| 8 | Collaborative filtering (SVD) | Personalisation layer |
-| 9 | Hybrid model + cold-start logic | Main contribution |
-| 10 | Evaluation notebook + results tables | Assignment requirement |
-| 11 | Report sections + optional Flutter | Deliverables |
+Structure the ~3,000-word report around **marking criteria**, not the full technical appendix.
+
+### Part 1 — System Design & Implementation (~1,000 words)
+
+- Problem: food waste + personalised recipe recommendation
+- Datasets and preprocessing (Food.com core; expiry/nutrition as signals)
+- Three models: content-based (baseline), CF, hybrid (improved)
+- Architecture diagram and design rationale
+
+### Part 2 — Evaluation & Cold-Start (~1,200 words)
+
+- Evaluation methodology (train/val/test, MAP, NDCG, sampled negatives)
+- Results table: Content vs CF vs Hybrid
+- RMSE for CF on validation
+- Cold-start: new user + unfamiliar ingredient (with demo reference)
+- Limitations: ingredient matching, synthetic fridges, API availability
+
+### Part 3 — GenAI Analysis (~800 words)
+
+Discussion only — no implementation required.
+
+| Approach | Role | Risk |
+|----------|------|------|
+| **Traditional RS (yours)** | Rank existing recipes; measurable; data-grounded | Cold-start, sparse data |
+| **LLM assistant** | Explanations, substitutions, dietary adaptation | Hallucination, unsafe advice |
+| **VAE recommender** | Latent taste preferences | Hard to interpret |
+| **GAN recipe generation** | New recipes from leftovers | Unvalidated nutrition/allergens |
+
+**Conclusion:** GenAI as an **assistant layer on top of** the hybrid recommender, not a replacement.
+
+**Responsible AI:** allergen safety, nutrition misinformation, cultural bias, privacy, transparency.
+
+Technical detail, schema, and extra results → **Appendix**.
 
 ---
 
-## Final Deliverables
+## Priority Order (What to Do Next)
 
-1. Group report (max 3,000 words, written in own words)
-2. Python notebook or GitHub repository with all code
-3. Final cleaned CSV files and/or SQLite database
-4. Group presentation (10–15 minutes)
-5. Optional Flutter app prototype or screenshots
+| Priority | Task |
+|----------|------|
+| 1 | Tune CF (KNN or tuned SVD) on validation → final test metrics table |
+| 2 | Write report Parts 1–2 with results and one cold-start example |
+| 3 | Flutter demo + API for presentation |
+| 4 | GenAI + Responsible AI section |
+| 5 | Presentation slides (10–15 min) |
+
+**Defer unless time allows:** full-scale Open Food Facts crawling, full Food.com dataset, deep SQLite discussion in main report.
+
+---
+
+## Current Status
+
+| Phase | Status |
+|-------|--------|
+| Data pipeline & SQLite | Done |
+| Expiry cleaning (one-hot schema) | Done |
+| Train/val/test interaction splits | Done |
+| Content-based, CF (SVD), hybrid models | Done |
+| Evaluation pipeline (MAP, NDCG, etc.) | Done — tune for stronger scores |
+| FastAPI + Flutter scaffold | Done |
+| Report & presentation | Group to complete |
 
 ---
 
@@ -367,23 +340,28 @@ If time allows — demonstration layer only; recommender + evaluation + report r
 
 | Risk | Mitigation |
 |------|------------|
-| Ingredient matching errors | Invest in synonym dictionary; log unmatched ingredients |
-| Large dataset size | Use filtered subset for dev; full set for final eval if feasible |
-| No shared IDs across datasets | Document as limitation; rely on normalised ingredient matching |
-| Open Food Facts API limits | Cache responses locally |
-| Report originality | Use this plan for structure; write final report in group's own words |
+| Ingredient matching errors | Synonym dictionary; document as limitation |
+| Low absolute MAP/NDCG on LOO test set | Report relative gains; tune on validation; consider KNN for CF |
+| Open Food Facts API outages | Cache products locally (`data/cache/`) |
+| Demo user ≠ Food.com user | Demo users use cold-start path; evaluation uses real Food.com IDs |
+| Report originality | Write in group's own words; cite datasets and libraries |
 
 ---
 
 ## Getting Started
 
-1. Clone this repository
-2. Install dependencies: `pip install -r requirements.txt`
-3. Download datasets to `data/raw/`
-4. Begin with **Phase 0** — project setup and `ingredient_utils.py`
+```bash
+git clone https://github.com/nadeeshaJ/FridgeWise-AI.git
+cd FridgeWise-AI
+pip install -r requirements.txt
+python scripts/download_data.py      # requires Kaggle credentials
+python scripts/build_dataset.py
+python scripts/train_and_evaluate.py
+python api/main.py                   # optional: for Flutter demo
+```
 
 ---
 
 ## License
 
-Academic project — see course guidelines for usage and attribution.
+Academic project — see DBS B9AI103 course guidelines for usage and attribution.

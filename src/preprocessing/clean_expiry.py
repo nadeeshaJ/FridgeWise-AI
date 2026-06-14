@@ -1,7 +1,8 @@
-"""Clean Food Expiry Tracker dataset → clean_expiry_items.csv"""
+"""Clean Food Expiry Tracker dataset → clean_expiry_items.csv."""
 
 from __future__ import annotations
 
+from datetime import timedelta
 from pathlib import Path
 
 import pandas as pd
@@ -9,52 +10,104 @@ import pandas as pd
 from src.preprocessing.config_loader import load_config, resolve_path
 from src.preprocessing.ingredient_utils import clean_ingredient_name, compute_expiry_priority_score
 
+# One-hot columns in prekshad2166/food-expiry-tracker Kaggle dataset
+ITEM_COLUMNS: dict[str, tuple[str, list[str]]] = {
+    "item_beverage": ("beverage", ["orange juice", "milk", "water", "soda"]),
+    "item_dairy": ("dairy", ["milk", "cheese", "yogurt", "butter"]),
+    "item_fruit": ("fruit", ["apple", "banana", "tomato", "orange"]),
+    "item_grain": ("grain", ["rice", "pasta", "bread", "cereal"]),
+    "item_meat": ("meat", ["chicken", "beef", "pork", "fish"]),
+    "item_snack": ("snack", ["chips", "crackers", "cereal", "cookies"]),
+    "item_vegetable": ("vegetable", ["onion", "carrot", "lettuce", "pepper"]),
+}
 
-COLUMN_ALIASES: dict[str, list[str]] = {
-    "ingredient_name": [
-        "ingredient_name",
-        "food_item",
-        "item_name",
-        "food_name",
-        "product_name",
-        "name",
-        "item",
-    ],
-    "category": ["category", "food_category", "item_category", "type"],
-    "storage_type": ["storage_type", "storage_method", "storage", "storage_location"],
-    "purchase_date": ["purchase_date", "buy_date", "date_purchased", "purchase"],
-    "expiry_date": ["expiry_date", "expiration_date", "expire_date", "best_before", "use_by_date"],
-    "consumed_or_wasted": [
-        "consumed_or_wasted",
-        "used_before_expiry",
-        "consumed",
-        "status",
-        "outcome",
-        "wasted",
-    ],
+STORAGE_COLUMNS = {
+    "storage_fridge": "fridge",
+    "storage_freezer": "freezer",
+    "storage_pantry": "pantry",
+}
+
+# Typical max shelf life (days) used to denormalise days_until_expiry (0–1 fraction)
+SHELF_LIFE_DAYS: dict[str, int] = {
+    "beverage": 14,
+    "dairy": 10,
+    "fruit": 7,
+    "grain": 90,
+    "meat": 5,
+    "snack": 120,
+    "vegetable": 10,
 }
 
 
-def _find_column(df: pd.DataFrame, aliases: list[str]) -> str | None:
-    lower_map = {c.lower().strip(): c for c in df.columns}
-    for alias in aliases:
-        if alias in lower_map:
-            return lower_map[alias]
-    for col in df.columns:
-        norm = col.lower().strip().replace(" ", "_")
-        for alias in aliases:
-            if alias.replace("_", "") in norm.replace("_", ""):
-                return col
-    return None
+def _is_one_hot_schema(df: pd.DataFrame) -> bool:
+    return all(col in df.columns for col in ITEM_COLUMNS)
 
 
-def _rename_columns(df: pd.DataFrame) -> pd.DataFrame:
-    rename_map = {}
-    for target, aliases in COLUMN_ALIASES.items():
-        found = _find_column(df, aliases)
-        if found and found != target:
-            rename_map[found] = target
-    return df.rename(columns=rename_map)
+def _bool_value(value) -> bool:
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, (int, float)):
+        return bool(value)
+    return str(value).strip().lower() in {"true", "1", "yes"}
+
+
+def _row_category_and_ingredient(row: pd.Series, row_idx: int) -> tuple[str, str]:
+    for col, (category, samples) in ITEM_COLUMNS.items():
+        if _bool_value(row.get(col)):
+            ingredient = samples[row_idx % len(samples)]
+            return category, ingredient
+    return "unknown", "mixed food item"
+
+
+def _row_storage(row: pd.Series) -> str:
+    for col, storage in STORAGE_COLUMNS.items():
+        if col in row and _bool_value(row.get(col)):
+            return storage
+    return "fridge"
+
+
+def _clean_one_hot_expiry(df: pd.DataFrame, reference_date: str) -> pd.DataFrame:
+    ref = pd.to_datetime(reference_date).normalize()
+    rows: list[dict] = []
+
+    for idx, row in df.iterrows():
+        category, ingredient = _row_category_and_ingredient(row, int(idx))
+        storage = _row_storage(row)
+        shelf_days = SHELF_LIFE_DAYS.get(category, 14)
+
+        fraction = float(row.get("days_until_expiry", 0.5) or 0.5)
+        fraction = max(0.0, min(1.0, fraction))
+        days_to_expiry = max(0, round(fraction * shelf_days))
+
+        expiry_date = (ref + timedelta(days=days_to_expiry)).date()
+        purchase_date = (ref - timedelta(days=max(1, shelf_days - days_to_expiry))).date()
+
+        used = row.get("used_before_expiry", "")
+        if str(used) in {"1", "1.0", "True", "true"}:
+            consumed = "consumed"
+        elif str(used) in {"0", "0.0", "False", "false"}:
+            consumed = "wasted"
+        else:
+            consumed = "unknown"
+
+        cleaned = clean_ingredient_name(ingredient)
+        rows.append(
+            {
+                "ingredient_name": ingredient,
+                "cleaned_ingredient_name": cleaned,
+                "category": category,
+                "storage_type": storage,
+                "purchase_date": purchase_date,
+                "expiry_date": expiry_date,
+                "days_to_expiry": days_to_expiry,
+                "consumed_or_wasted": consumed,
+                "expiry_priority_score": compute_expiry_priority_score(days_to_expiry),
+            }
+        )
+
+    out = pd.DataFrame(rows)
+    out.insert(0, "expiry_item_id", range(1, len(out) + 1))
+    return out
 
 
 def _find_expiry_file(raw_dir: Path, configured: str | None) -> Path:
@@ -62,84 +115,30 @@ def _find_expiry_file(raw_dir: Path, configured: str | None) -> Path:
         path = raw_dir / configured
         if path.exists():
             return path
-    candidates = list(raw_dir.glob("*.csv"))
-    for path in candidates:
-        name = path.name.lower()
-        if "expiry" in name or "food_expiry" in name or "food-expiry" in name:
+    for name in ("food_expiry_tracker.csv", "food-expiry-tracker.csv"):
+        path = raw_dir / name
+        if path.exists():
             return path
-    if candidates:
-        # Fallback: any csv that isn't food.com
-        for path in candidates:
-            if "raw_recipes" not in path.name.lower() and "raw_interactions" not in path.name.lower():
-                return path
+    for path in raw_dir.glob("*.csv"):
+        if "expiry" in path.name.lower():
+            return path
     raise FileNotFoundError(
         f"No expiry dataset CSV found in {raw_dir}. "
         "Download from https://www.kaggle.com/datasets/prekshad2166/food-expiry-tracker"
     )
 
 
-def clean_expiry(
-    raw_path: Path,
-    output_path: Path,
-    reference_date: str,
-) -> pd.DataFrame:
+def clean_expiry(raw_path: Path, output_path: Path, reference_date: str) -> pd.DataFrame:
     df = pd.read_csv(raw_path)
-    df = _rename_columns(df)
 
-    if "ingredient_name" not in df.columns:
-        raise ValueError(f"Could not find ingredient column in {raw_path.name}. Columns: {list(df.columns)}")
-
-    ref = pd.to_datetime(reference_date).normalize()
-
-    if "purchase_date" in df.columns:
-        df["purchase_date"] = pd.to_datetime(df["purchase_date"], errors="coerce").dt.date
+    if _is_one_hot_schema(df):
+        out = _clean_one_hot_expiry(df, reference_date)
     else:
-        df["purchase_date"] = None
+        raise ValueError(
+            f"Unsupported expiry schema in {raw_path.name}. "
+            f"Expected one-hot item columns: {list(ITEM_COLUMNS)}"
+        )
 
-    if "expiry_date" in df.columns:
-        df["expiry_date"] = pd.to_datetime(df["expiry_date"], errors="coerce").dt.date
-    else:
-        # Synthesise expiry from shelf-life if only purchase date exists
-        shelf_col = _find_column(df, ["shelf_life", "shelf_life_days", "days_to_expiry"])
-        if shelf_col and "purchase_date" in df.columns:
-            df["expiry_date"] = (
-                pd.to_datetime(df["purchase_date"], errors="coerce")
-                + pd.to_timedelta(pd.to_numeric(df[shelf_col], errors="coerce").fillna(7), unit="D")
-            ).dt.date
-        else:
-            df["expiry_date"] = None
-
-    df["cleaned_ingredient_name"] = df["ingredient_name"].astype(str).apply(clean_ingredient_name)
-    df["days_to_expiry"] = (
-        pd.to_datetime(df["expiry_date"], errors="coerce") - ref
-    ).dt.days
-    df["days_to_expiry"] = df["days_to_expiry"].fillna(30).astype(int)
-    df["expiry_priority_score"] = df["days_to_expiry"].apply(compute_expiry_priority_score)
-
-    if "category" not in df.columns:
-        df["category"] = "unknown"
-    if "storage_type" not in df.columns:
-        df["storage_type"] = "fridge"
-    if "consumed_or_wasted" not in df.columns:
-        df["consumed_or_wasted"] = "unknown"
-
-    df = df.reset_index(drop=True)
-    df["expiry_item_id"] = df.index + 1
-
-    out = df[
-        [
-            "expiry_item_id",
-            "ingredient_name",
-            "cleaned_ingredient_name",
-            "category",
-            "storage_type",
-            "purchase_date",
-            "expiry_date",
-            "days_to_expiry",
-            "consumed_or_wasted",
-            "expiry_priority_score",
-        ]
-    ]
     output_path.parent.mkdir(parents=True, exist_ok=True)
     out.to_csv(output_path, index=False)
     return out

@@ -12,8 +12,13 @@ food_com:
   max_interactions: 500000
 
 expiry:
-  # Auto-detected if null; common filenames on Kaggle
-  filename: null
+  filename: food_expiry_tracker.csv
+
+evaluation:
+  k_values: [5, 10]
+  max_eval_users: 30
+  min_rating_for_positive: 4
+  results_file: data/processed/evaluation_results.json
 
 open_food_facts:
   base_url: https://world.openfoodfacts.org

@@ -1,0 +1,35 @@
+{
+  "rmse_collaborative_filtering": NaN,
+  "models": {
+    "content_based": {
+      "precision@5": 0.0,
+      "recall@5": 0.0,
+      "map@5": 0.0,
+      "ndcg@5": 0.0,
+      "precision@10": 0.0,
+      "recall@10": 0.0,
+      "map@10": 0.0,
+      "ndcg@10": 0.0
+    },
+    "collaborative_filtering": {
+      "precision@5": 0.0,
+      "recall@5": 0.0,
+      "map@5": 0.0,
+      "ndcg@5": 0.0,
+      "precision@10": 0.0,
+      "recall@10": 0.0,
+      "map@10": 0.0,
+      "ndcg@10": 0.0
+    },
+    "hybrid": {
+      "precision@5": 0.0,
+      "recall@5": 0.0,
+      "map@5": 0.0,
+      "ndcg@5": 0.0,
+      "precision@10": 0.0,
+      "recall@10": 0.0,
+      "map@10": 0.0,
+      "ndcg@10": 0.0
+    }
+  }
+}
