@@ -210,6 +210,20 @@ python scripts/train_and_evaluate.py
 
 Results are written to `data/processed/evaluation_results.json`.
 
+Generate report charts:
+
+```bash
+python scripts/plot_evaluation_results.py
+```
+
+Charts are saved to `data/processed/charts/`. For interactive exploration, open `notebooks/evaluation_results.ipynb`.
+
+Run unit tests:
+
+```bash
+python -m pytest tests/ -q
+```
+
 ### 4. Run the API
 
 ```bash
@@ -508,7 +522,9 @@ evaluation:
 | Offline evaluation | Complete | MAP@5 0.55 (hybrid), NDCG@5 0.56 on test split |
 | FastAPI backend | Complete | Fridge CRUD, barcode add, tuned CF loading |
 | Flutter app | Complete | Fridge CRUD, barcode scan, error handling |
-| Ingredient matching | Ongoing | Expand synonym dictionary |
+| Ingredient matching | Complete | 100+ synonym mappings, cold-start substitutes |
+| Unit tests | Complete | `pytest tests/` |
+| Evaluation charts | Complete | `scripts/plot_evaluation_results.py`, `notebooks/` |
 
 ---
 

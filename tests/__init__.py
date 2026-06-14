@@ -1,0 +1,1 @@
+# FridgeWise-AI tests
