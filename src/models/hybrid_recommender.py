@@ -112,3 +112,87 @@ class HybridRecommender:
             )
 
         return pd.DataFrame(rows).sort_values("score", ascending=False).head(top_k)
+
+    def recommend_from_candidates(
+        self,
+        user_id: int,
+        candidate_recipe_ids: list[int],
+        fridge_ingredients: set[str],
+        top_k: int = 10,
+        train_user_ids: set[int] | None = None,
+    ) -> pd.DataFrame:
+        """Score candidates — uses rank fusion for known users to preserve CF strength."""
+        if fridge_ingredients is not None:
+            fridge_ings = fridge_ingredients
+            expiry_map: dict[str, float] = {}
+        else:
+            fridge_ings, expiry_map = self._fridge_context(user_id)
+        is_cold_start = train_user_ids is not None and user_id not in train_user_ids
+
+        if is_cold_start or self.cf_model is None:
+            return self.recommend(
+                user_id,
+                top_k=top_k,
+                train_user_ids=train_user_ids,
+                fridge_ingredients=fridge_ings,
+            )
+
+        # Known user: fuse CF ranking with content/hybrid signals
+        cf_ranked = self.cf_model.recommend_for_user(
+            user_id, candidate_recipe_ids, top_k=len(candidate_recipe_ids)
+        )
+        cf_order = cf_ranked["recipe_id"].astype(int).tolist()
+        cf_scores = dict(zip(cf_ranked["recipe_id"].astype(int), cf_ranked["score"]))
+
+        content_ranked = self.content_model.recommend(
+            fridge_ings,
+            top_k=len(candidate_recipe_ids),
+            candidate_pool=max(500, len(candidate_recipe_ids)),
+            forced_recipe_ids=set(candidate_recipe_ids),
+        )
+        content_order = content_ranked["recipe_id"].astype(int).tolist()
+
+        rrf: dict[int, float] = {}
+        for rank, rid in enumerate(cf_order):
+            rrf[rid] = rrf.get(rid, 0.0) + 1.0 / (50 + rank)
+        for rank, rid in enumerate(content_order):
+            rrf[rid] = rrf.get(rid, 0.0) + 0.35 / (50 + rank)
+
+        cf_vals = list(cf_scores.values())
+        cf_min, cf_max = (min(cf_vals), max(cf_vals)) if cf_vals else (1.0, 5.0)
+        cf_span = cf_max - cf_min or 1.0
+
+        rows = []
+        for recipe_id in sorted(rrf, key=rrf.get, reverse=True)[: max(top_k, len(candidate_recipe_ids))]:
+            if recipe_id not in set(self.recipes_df["recipe_id"].astype(int)):
+                continue
+            recipe_row = self.recipes_df[self.recipes_df["recipe_id"] == recipe_id].iloc[0]
+            recipe_ings = _split_pipe(recipe_row["cleaned_ingredients"])
+            matched = recipe_ings & fridge_ings
+            ingredient_match = len(matched) / len(recipe_ings) if recipe_ings and fridge_ings else 0.0
+            cf_norm = (cf_scores.get(recipe_id, 3.0) - cf_min) / cf_span
+            expiry = self._expiry_score(recipe_id, expiry_map, fridge_ings)
+            nutrition = self._nutrition_score(recipe_id)
+            final = (
+                0.45 * cf_norm
+                + 0.25 * rrf[recipe_id]
+                + 0.15 * ingredient_match
+                + 0.10 * expiry
+                + 0.05 * nutrition
+            )
+            rows.append(
+                {
+                    "recipe_id": recipe_id,
+                    "recipe_name": recipe_row["recipe_name"],
+                    "score": final,
+                    "ingredient_match_score": ingredient_match,
+                    "expiry_priority_score": expiry,
+                    "nutrition_score": nutrition,
+                    "matched_ingredients": "|".join(sorted(matched)),
+                    "missing_ingredients": "|".join(sorted(recipe_ings - fridge_ings)),
+                    "minutes": int(recipe_row["minutes"]),
+                    "cold_start": False,
+                }
+            )
+
+        return pd.DataFrame(rows).sort_values("score", ascending=False).head(top_k)

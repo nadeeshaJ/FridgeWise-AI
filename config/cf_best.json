@@ -1,0 +1,40 @@
+{
+  "best": {
+    "algorithm": "knn_item",
+    "params": {
+      "k": 40
+    },
+    "validation_rmse": 0.9014042096573965,
+    "validation_hit_rate@10": 0.6
+  },
+  "all_results": [
+    {
+      "algorithm": "knn_item",
+      "params": {
+        "k": 40
+      },
+      "validation_rmse": 0.9014042096573965,
+      "validation_hit_rate@10": 0.6
+    },
+    {
+      "algorithm": "svd",
+      "params": {
+        "n_factors": 50,
+        "n_epochs": 15,
+        "reg_all": 0.05
+      },
+      "validation_rmse": 0.8561827172644948,
+      "validation_hit_rate@10": 0.0
+    },
+    {
+      "algorithm": "svd",
+      "params": {
+        "n_factors": 80,
+        "n_epochs": 20,
+        "reg_all": 0.02
+      },
+      "validation_rmse": 0.8537004740632455,
+      "validation_hit_rate@10": 0.0
+    }
+  ]
+}

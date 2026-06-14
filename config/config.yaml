@@ -18,7 +18,35 @@ evaluation:
   k_values: [5, 10]
   max_eval_users: 30
   min_rating_for_positive: 4
+  negative_sample: 99
   results_file: data/processed/evaluation_results.json
+
+collaborative_filtering:
+  best_config_file: config/cf_best.json
+  default:
+    algorithm: knn_item
+    params:
+      k: 40
+  max_items_for_knn: 6000
+  tuning:
+    hit_rate_k: 10
+    max_tune_users: 40
+    negative_sample: 99
+    max_items_for_knn: 6000
+  candidates:
+    - algorithm: knn_item
+      params:
+        k: 40
+    - algorithm: svd
+      params:
+        n_factors: 50
+        n_epochs: 15
+        reg_all: 0.05
+    - algorithm: svd
+      params:
+        n_factors: 80
+        n_epochs: 20
+        reg_all: 0.02
 
 open_food_facts:
   base_url: https://world.openfoodfacts.org

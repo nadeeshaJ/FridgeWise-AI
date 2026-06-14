@@ -15,9 +15,9 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from src.models.collaborative_filtering import CollaborativeFilteringRecommender
 from src.models.content_based import ContentBasedRecommender
 from src.models.hybrid_recommender import HybridRecommender
+from src.evaluation.evaluate import load_best_cf
 from src.preprocessing.config_loader import load_config, resolve_path
 
 app = FastAPI(title="FridgeWise AI API", version="1.0.0")
@@ -45,7 +45,7 @@ def _load_models():
         train = pd.read_csv(processed / "clean_interactions.csv")
 
     content = ContentBasedRecommender(recipes).fit()
-    cf = CollaborativeFilteringRecommender(train).fit()
+    cf = load_best_cf(train, cfg)
     hybrid = HybridRecommender(content, cf, recipes, fridge, products, cfg["hybrid_weights"])
     train_users = set(train["user_id"].astype(int))
 

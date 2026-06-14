@@ -69,30 +69,43 @@ class ContentBasedRecommender:
         top_k: int = 10,
         tfidf_weight: float = 0.4,
         candidate_pool: int = 500,
+        forced_recipe_ids: set[int] | None = None,
     ) -> pd.DataFrame:
-        if not fridge_ingredients:
+        if not fridge_ingredients and not forced_recipe_ids:
             return pd.DataFrame(columns=["recipe_id", "score"])
 
-        tfidf = self.tfidf_scores(fridge_ingredients, top_n=candidate_pool)
-        if tfidf.empty:
-            return tfidf
+        tfidf = (
+            self.tfidf_scores(fridge_ingredients, top_n=candidate_pool)
+            if fridge_ingredients
+            else pd.DataFrame(columns=["recipe_id", "score"])
+        )
 
-        candidate_ids = set(tfidf["recipe_id"].astype(int))
+        candidate_ids = set(tfidf["recipe_id"].astype(int).tolist() if not tfidf.empty else [])
+        if forced_recipe_ids:
+            candidate_ids |= {int(r) for r in forced_recipe_ids}
+        if not candidate_ids:
+            return pd.DataFrame(columns=["recipe_id", "score"])
+
         subset = self.recipes_df[self.recipes_df["recipe_id"].isin(candidate_ids)]
         rows = []
         for _, recipe in subset.iterrows():
             recipe_ings = _split_pipe(recipe["cleaned_ingredients"])
             if not recipe_ings:
                 continue
-            matched = recipe_ings & fridge_ingredients
-            rows.append(
-                {
-                    "recipe_id": int(recipe["recipe_id"]),
-                    "score_overlap": len(matched) / len(recipe_ings),
-                }
-            )
+            matched = recipe_ings & fridge_ingredients if fridge_ingredients else set()
+            overlap = len(matched) / len(recipe_ings) if fridge_ingredients else 0.0
+            rows.append({"recipe_id": int(recipe["recipe_id"]), "score_overlap": overlap})
+
         overlap = pd.DataFrame(rows)
-        merged = overlap.merge(tfidf.rename(columns={"score": "score_tfidf"}), on="recipe_id", how="inner")
+        if overlap.empty:
+            return overlap
+
+        if tfidf.empty:
+            overlap["score"] = overlap["score_overlap"]
+            return overlap.sort_values("score", ascending=False).head(top_k)[["recipe_id", "score"]]
+
+        merged = overlap.merge(tfidf.rename(columns={"score": "score_tfidf"}), on="recipe_id", how="left")
+        merged["score_tfidf"] = merged["score_tfidf"].fillna(0.0)
         max_tfidf = merged["score_tfidf"].max() or 1.0
         merged["score"] = (1 - tfidf_weight) * merged["score_overlap"] + tfidf_weight * (
             merged["score_tfidf"] / max_tfidf

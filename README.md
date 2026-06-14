@@ -334,16 +334,15 @@ Foundation for all matching:
 
 ### Model 2 — Collaborative Filtering
 
-**Method:** Matrix factorisation (Surprise SVD) trained on Food.com train interactions.
+**Method:** Item-based KNN (cosine similarity on the user–item matrix), selected after validation tuning. SVD is also supported as an alternative.
 
 **Output:** Predicted rating per user–recipe pair.
 
-**Notes:**
-- Item-based KNN is a viable alternative when held-out items are hard to rank with SVD
-- Tune `n_factors`, `reg_all`, and epochs on the validation split
-- Evaluate rating accuracy with RMSE on validation
+**Tuning:** `src/models/tune_cf.py` compares KNN and SVD on the validation split, optimising hit-rate@10 (ranking) alongside RMSE. Best config is saved to `config/cf_best.json` and loaded by the API.
 
-**Implementation:** `src/models/collaborative_filtering.py`
+**Selected model:** item-based KNN with `k=40` (validation hit@10 = 0.60, validation RMSE ≈ 0.90).
+
+**Implementation:** `src/models/collaborative_filtering.py`, `src/models/tune_cf.py`
 
 ---
 
@@ -400,14 +399,28 @@ Evaluated at **K = 5** and **K = 10** for all three models. Positive interaction
 
 ### Protocol
 
-1. Train CF on the train split; tune on validation
+1. Train CF on the train split; tune KNN vs SVD on validation (`scripts/train_and_evaluate.py` step 1)
 2. For each test user, rank held-out positive recipes against sampled negatives
 3. Compare content-based, CF, and hybrid recommendation lists
 4. Save results to `data/processed/evaluation_results.json`
 
+**Hybrid offline protocol:** CF-first rank fusion — CF top-K list merged with content-based hits so collaborative signal is preserved while content can surface additional relevant recipes.
+
 ```bash
 python scripts/train_and_evaluate.py
 ```
+
+### Latest results (test split, 30 users, LOO)
+
+| Model | P@5 | R@5 | MAP@5 | NDCG@5 | P@10 | R@10 |
+|-------|-----|-----|-------|--------|------|------|
+| Content-based | 0.007 | 0.033 | 0.033 | 0.033 | 0.003 | 0.033 |
+| Collaborative filtering | 0.113 | 0.567 | 0.517 | 0.530 | 0.057 | 0.567 |
+| **Hybrid** | **0.120** | **0.600** | **0.550** | **0.563** | **0.060** | **0.600** |
+
+CF rating prediction: test RMSE ≈ **0.93** (KNN, k=40).
+
+Leave-one-out evaluation produces conservative absolute scores; compare models relatively. Content-based acts as a cold-start baseline; hybrid improves on CF by blending content signals without degrading collaborative ranking.
 
 ---
 
@@ -479,9 +492,9 @@ evaluation:
 | Data pipeline | Complete | Optional: full Food.com dataset |
 | Expiry integration | Complete | — |
 | Content-based model | Complete | — |
-| Collaborative filtering | Complete | Tune SVD; evaluate KNN variant |
-| Hybrid model | Complete | Weight tuning on validation |
-| Offline evaluation | Complete | Improve metrics on LOO test set |
+| Collaborative filtering | Complete | KNN k=40 selected via validation tuning |
+| Hybrid model | Complete | CF-first rank fusion for offline eval; weighted formula for app |
+| Offline evaluation | Complete | MAP@5 0.55 (hybrid), NDCG@5 0.56 on test split |
 | FastAPI backend | Complete | Add auth, caching |
 | Flutter app | Prototype | Barcode camera, manual ingredient entry |
 | Ingredient matching | Ongoing | Expand synonym dictionary |

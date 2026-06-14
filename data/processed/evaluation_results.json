@@ -1,35 +1,42 @@
 {
-  "rmse_collaborative_filtering": NaN,
+  "collaborative_filtering": {
+    "algorithm": "knn_item",
+    "params": {
+      "k": 40
+    },
+    "validation_rmse": 0.9014042096573965,
+    "test_rmse": 0.9251591489513261
+  },
   "models": {
     "content_based": {
-      "precision@5": 0.0,
-      "recall@5": 0.0,
-      "map@5": 0.0,
-      "ndcg@5": 0.0,
-      "precision@10": 0.0,
-      "recall@10": 0.0,
-      "map@10": 0.0,
-      "ndcg@10": 0.0
+      "precision@5": 0.006666666666666667,
+      "recall@5": 0.03333333333333333,
+      "map@5": 0.03333333333333333,
+      "ndcg@5": 0.03333333333333333,
+      "precision@10": 0.0033333333333333335,
+      "recall@10": 0.03333333333333333,
+      "map@10": 0.03333333333333333,
+      "ndcg@10": 0.03333333333333333
     },
     "collaborative_filtering": {
-      "precision@5": 0.0,
-      "recall@5": 0.0,
-      "map@5": 0.0,
-      "ndcg@5": 0.0,
-      "precision@10": 0.0,
-      "recall@10": 0.0,
-      "map@10": 0.0,
-      "ndcg@10": 0.0
+      "precision@5": 0.11333333333333334,
+      "recall@5": 0.5666666666666667,
+      "map@5": 0.5166666666666667,
+      "ndcg@5": 0.5297596420238124,
+      "precision@10": 0.05666666666666667,
+      "recall@10": 0.5666666666666667,
+      "map@10": 0.5166666666666667,
+      "ndcg@10": 0.5297596420238124
     },
     "hybrid": {
-      "precision@5": 0.0,
-      "recall@5": 0.0,
-      "map@5": 0.0,
-      "ndcg@5": 0.0,
-      "precision@10": 0.0,
-      "recall@10": 0.0,
-      "map@10": 0.0,
-      "ndcg@10": 0.0
+      "precision@5": 0.12000000000000001,
+      "recall@5": 0.6,
+      "map@5": 0.55,
+      "ndcg@5": 0.5630929753571458,
+      "precision@10": 0.060000000000000005,
+      "recall@10": 0.6,
+      "map@10": 0.55,
+      "ndcg@10": 0.5630929753571458
     }
   }
 }
