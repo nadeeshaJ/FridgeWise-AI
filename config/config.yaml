@@ -1,0 +1,53 @@
+paths:
+  raw_dir: data/raw
+  processed_dir: data/processed
+  cache_dir: data/cache
+  db_path: data/fridge_recommender.db
+
+food_com:
+  recipes_file: RAW_recipes.csv
+  interactions_file: RAW_interactions.csv
+  # Use subset for faster prototyping; set null to use full dataset
+  max_recipes: 50000
+  max_interactions: 500000
+
+expiry:
+  # Auto-detected if null; common filenames on Kaggle
+  filename: null
+
+open_food_facts:
+  base_url: https://world.openfoodfacts.org
+  page_size: 24
+  search_terms:
+    - pasta
+    - cheese
+    - milk
+    - yogurt
+    - cereal
+    - rice
+    - bread
+    - tofu
+    - tomato sauce
+    - beans
+  max_products_per_term: 8
+
+fridge_inventory:
+  num_users: 40
+  min_items_per_user: 5
+  max_items_per_user: 15
+  reference_date: "2026-06-14"
+
+final_dataset:
+  # Limit user-recipe pairs for manageable file size during development
+  max_users: 200
+  max_recipes_per_user: 50
+  min_rating_for_positive: 4
+
+hybrid_weights:
+  ingredient_match: 0.35
+  predicted_rating: 0.30
+  expiry_priority: 0.20
+  nutrition: 0.15
+  cold_start_ingredient_match: 0.50
+  cold_start_expiry: 0.30
+  cold_start_nutrition: 0.20

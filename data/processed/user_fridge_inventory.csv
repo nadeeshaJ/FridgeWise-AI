@@ -1,0 +1,356 @@
+inventory_id,user_id,ingredient_name,cleaned_ingredient_name,quantity,unit,storage_type,purchase_date,expiry_date,days_to_expiry,barcode,expiry_priority_score
+1,10001,dijon mustard,dijon mustard,1.5,piece,pantry,2026-06-02,2026-06-17,3,,0.7
+2,10001,sweetened condensed milk,sweetened condensed milk,0.8,g,pantry,2026-06-05,2026-06-28,14,,0.2
+3,10001,dry white wine,dry white wine,2.0,g,fridge,2026-06-08,2026-06-15,1,,0.9
+4,10001,basil leav,basil leav,0.7,cup,fridge,2026-06-10,2026-07-14,30,,0.2
+5,10001,red wine vinegar,red wine vinegar,2.6,cup,fridge,2026-06-12,2026-06-17,3,,0.7
+6,10001,egg whit,egg whit,2.2,g,pantry,2026-06-10,2026-07-05,21,,0.2
+7,10001,brown sugar,brown sugar,2.8,bottle,freezer,2026-06-11,2026-07-05,21,,0.2
+8,10001,butter,butter,2.5,pack,fridge,2026-06-06,2026-07-14,30,,0.2
+9,10001,green onion,green onion,2.1,piece,fridge,2026-06-12,2026-06-17,3,,0.7
+10,10001,thyme,thyme,2.7,cup,pantry,2026-06-07,2026-06-24,10,,0.5
+11,10001,apple,apple,2.3,cup,pantry,2026-06-13,2026-06-15,1,,0.9
+12,10001,sesame seed,sesame seed,1.8,g,fridge,2026-06-10,2026-06-17,3,,0.7
+13,10001,tempeh,tempeh,1.7,cup,pantry,2026-06-11,2026-06-24,10,,0.5
+14,10001,pandan,pandan,0.7,bottle,freezer,2026-06-01,2026-06-28,14,,0.2
+15,10002,sage,sage,2.3,piece,pantry,2026-06-07,2026-07-14,30,,0.2
+16,10002,mushroom,mushroom,0.8,bottle,freezer,2026-06-04,2026-06-24,10,,0.5
+17,10002,cassava,cassava,2.3,cup,fridge,2026-06-09,2026-06-17,3,,0.7
+18,10002,plantain,plantain,2.2,g,freezer,2026-06-01,2026-07-05,21,,0.2
+19,10003,granulated sugar,granulated sugar,1.1,cup,pantry,2026-06-13,2026-07-05,21,,0.2
+20,10003,lemon juice,lemon juice,2.9,g,fridge,2026-06-01,2026-06-14,0,,1.0
+21,10003,sage,sage,1.1,pack,fridge,2026-06-04,2026-06-14,0,,1.0
+22,10003,cauliflower,cauliflower,1.7,piece,fridge,2026-06-04,2026-06-15,1,,0.9
+23,10003,corn,corn,2.0,cup,freezer,2026-06-11,2026-06-21,7,,0.5
+24,10003,salt freshly ground black pepper,salt freshly ground black pepper,1.9,piece,fridge,2026-06-09,2026-06-16,2,,0.9
+25,10003,cooking spray,cooking spray,1.5,g,pantry,2026-06-03,2026-07-14,30,,0.2
+26,10003,miso,miso,2.6,g,freezer,2026-06-04,2026-06-15,1,,0.9
+27,10003,cassava,cassava,2.6,bottle,pantry,2026-06-02,2026-06-15,1,,0.9
+28,10004,lemon,lemon,1.6,bottle,fridge,2026-06-03,2026-07-14,30,,0.2
+29,10004,cooking spray,cooking spray,2.8,g,fridge,2026-06-03,2026-06-17,3,,0.7
+30,10004,cooked rice,cooked rice,2.5,bottle,fridge,2026-06-13,2026-06-15,1,,0.9
+31,10004,jackfruit,jackfruit,0.8,piece,pantry,2026-06-09,2026-07-14,30,,0.2
+32,10004,kimchi,kimchi,1.8,pack,freezer,2026-06-09,2026-06-24,10,,0.5
+33,10005,beef broth,beef broth,1.1,pack,fridge,2026-06-07,2026-06-21,7,,0.5
+34,10005,egg,egg,0.9,cup,fridge,2026-06-03,2026-07-14,30,,0.2
+35,10005,seasoning salt,seasoning salt,2.0,g,pantry,2026-05-31,2026-07-14,30,,0.2
+36,10005,jackfruit,jackfruit,1.1,piece,fridge,2026-06-04,2026-06-28,14,,0.2
+37,10005,plantain,plantain,0.5,pack,freezer,2026-06-09,2026-06-28,14,,0.2
+38,10006,bean,bean,2.4,bottle,pantry,2026-06-06,2026-06-15,1,,0.9
+39,10006,molass,molass,1.8,bottle,pantry,2026-06-12,2026-07-14,30,,0.2
+40,10006,lemon juice,lemon juice,1.8,pack,freezer,2026-06-02,2026-06-14,0,,1.0
+41,10006,rosemary,rosemary,2.6,pack,pantry,2026-06-13,2026-06-14,0,,1.0
+42,10006,dry mustard,dry mustard,2.8,cup,freezer,2026-06-06,2026-06-15,1,,0.9
+43,10006,warm water,warm water,0.9,g,freezer,2026-06-08,2026-06-15,1,,0.9
+44,10006,pandan,pandan,2.0,piece,freezer,2026-06-04,2026-06-19,5,,0.7
+45,10006,cassava,cassava,1.2,bottle,freezer,2026-06-04,2026-06-24,10,,0.5
+46,10007,chili powder,chili powder,0.9,g,fridge,2026-06-10,2026-06-16,2,,0.9
+47,10007,buttermilk,buttermilk,2.4,cup,fridge,2026-06-04,2026-06-16,2,,0.9
+48,10007,pepper,pepper,1.7,bottle,freezer,2026-06-01,2026-06-16,2,,0.9
+49,10007,leek,leek,2.8,bottle,freezer,2026-06-06,2026-07-14,30,,0.2
+50,10007,almond extract,almond extract,1.3,pack,freezer,2026-06-08,2026-07-14,30,,0.2
+51,10007,granulated sugar,granulated sugar,2.1,piece,pantry,2026-06-06,2026-06-15,1,,0.9
+52,10007,whipping cream,whipping cream,1.8,piece,pantry,2026-06-13,2026-07-14,30,,0.2
+53,10007,sage,sage,0.6,piece,fridge,2026-06-06,2026-06-28,14,,0.2
+54,10007,margarine,margarine,2.0,bottle,fridge,2026-06-03,2026-06-15,1,,0.9
+55,10007,basil leav,basil leav,1.9,cup,freezer,2026-06-06,2026-06-24,10,,0.5
+56,10007,confectioners sugar,confectioners sugar,2.1,piece,freezer,2026-06-01,2026-06-28,14,,0.2
+57,10007,kimchi,kimchi,0.9,cup,freezer,2026-06-06,2026-07-14,30,,0.2
+58,10007,plantain,plantain,3.0,cup,pantry,2026-06-12,2026-06-28,14,,0.2
+59,10008,turmeric,turmeric,2.2,bottle,freezer,2026-06-11,2026-06-24,10,,0.5
+60,10008,tomato paste,tomato paste,1.9,bottle,freezer,2026-06-12,2026-06-21,7,,0.5
+61,10008,rice,rice,0.6,pack,pantry,2026-06-13,2026-07-05,21,,0.2
+62,10008,tomato,tomato,0.5,cup,freezer,2026-06-09,2026-06-21,7,,0.5
+63,10008,skinless chicken breast halv,chicken breast halv,2.1,cup,freezer,2026-06-10,2026-06-21,7,,0.5
+64,10008,sour cream,sour cream,0.8,piece,pantry,2026-06-02,2026-07-14,30,,0.2
+65,10008,salsa,salsa,0.9,pack,freezer,2026-06-08,2026-07-05,21,,0.2
+66,10008,cider vinegar,cider vinegar,2.5,cup,fridge,2026-06-03,2026-06-28,14,,0.2
+67,10008,rosemary,rosemary,1.0,g,pantry,2026-06-13,2026-06-28,14,,0.2
+68,10008,chicken stock,chicken stock,1.8,bottle,pantry,2026-06-08,2026-06-14,0,,1.0
+69,10008,tempeh,tempeh,2.4,g,fridge,2026-06-09,2026-06-28,14,,0.2
+70,10008,pandan,pandan,2.7,piece,fridge,2026-06-08,2026-06-19,5,,0.7
+71,10009,maple syrup,maple syrup,1.5,pack,freezer,2026-06-10,2026-06-28,14,,0.2
+72,10009,mustard,mustard,0.9,pack,fridge,2026-06-02,2026-06-15,1,,0.9
+73,10009,lemon juice of,lemon juice of,1.4,g,fridge,2026-06-06,2026-06-28,14,,0.2
+74,10009,strawberry,strawberry,1.3,piece,freezer,2026-05-31,2026-06-21,7,,0.5
+75,10009,warm water,warm water,1.8,cup,pantry,2026-06-11,2026-06-24,10,,0.5
+76,10009,raisin,raisin,0.8,pack,pantry,2026-06-10,2026-06-21,7,,0.5
+77,10009,kimchi,kimchi,0.6,pack,fridge,2026-06-11,2026-06-17,3,,0.7
+78,10009,jackfruit,jackfruit,2.9,g,fridge,2026-06-07,2026-07-14,30,,0.2
+79,10010,sea salt,sea salt,2.6,piece,fridge,2026-06-10,2026-06-28,14,,0.2
+80,10010,jalapeno,jalapeno,0.8,bottle,pantry,2026-06-02,2026-07-05,21,,0.2
+81,10010,broccoli floret,broccoli floret,0.6,bottle,fridge,2026-06-10,2026-07-14,30,,0.2
+82,10010,red wine vinegar,red wine vinegar,0.6,pack,fridge,2026-06-03,2026-06-17,3,,0.7
+83,10010,balsamic vinegar,balsamic vinegar,0.8,g,pantry,2026-06-02,2026-06-21,7,,0.5
+84,10010,salt,salt,1.5,pack,fridge,2026-06-05,2026-06-14,0,,1.0
+85,10010,mushroom,mushroom,2.4,piece,fridge,2026-06-03,2026-06-28,14,,0.2
+86,10010,kimchi,kimchi,0.6,cup,freezer,2026-06-09,2026-06-21,7,,0.5
+87,10010,jackfruit,jackfruit,2.3,cup,freezer,2026-06-10,2026-07-14,30,,0.2
+88,10011,ginger,ginger,1.5,cup,freezer,2026-06-13,2026-06-15,1,,0.9
+89,10011,ground black pepper,black pepper,0.8,cup,fridge,2026-06-10,2026-06-17,3,,0.7
+90,10011,white pepper,white pepper,2.3,cup,freezer,2026-06-04,2026-06-28,14,,0.2
+91,10011,apricot,apricot,1.5,g,fridge,2026-06-02,2026-06-17,3,,0.7
+92,10011,jackfruit,jackfruit,0.9,piece,fridge,2026-06-10,2026-07-05,21,,0.2
+93,10011,tempeh,tempeh,1.9,bottle,freezer,2026-05-31,2026-06-17,3,,0.7
+94,10012,dijon mustard,dijon mustard,2.6,cup,freezer,2026-06-09,2026-06-17,3,,0.7
+95,10012,milk,milk,1.9,cup,pantry,2026-06-12,2026-06-14,0,,1.0
+96,10012,apple juice,apple juice,0.7,pack,fridge,2026-06-02,2026-06-14,0,,1.0
+97,10012,water,water,2.7,cup,fridge,2026-06-04,2026-06-21,7,,0.5
+98,10012,turmeric,turmeric,2.7,pack,freezer,2026-06-10,2026-06-17,3,,0.7
+99,10012,broccoli floret,broccoli floret,2.2,piece,fridge,2026-06-13,2026-06-19,5,,0.7
+100,10012,canola oil,canola oil,0.6,piece,freezer,2026-06-04,2026-07-05,21,,0.2
+101,10012,salt and pepper,salt and pepper,0.9,pack,freezer,2026-06-10,2026-06-14,0,,1.0
+102,10012,cilantro,cilantro,1.9,bottle,fridge,2026-06-09,2026-06-15,1,,0.9
+103,10012,tomato sauce,tomato sauce,2.4,g,freezer,2026-06-03,2026-06-24,10,,0.5
+104,10012,green onion,green onion,2.9,cup,freezer,2026-06-05,2026-06-15,1,,0.9
+105,10012,pandan,pandan,2.6,piece,fridge,2026-06-07,2026-06-15,1,,0.9
+106,10012,tempeh,tempeh,2.9,pack,freezer,2026-06-01,2026-07-14,30,,0.2
+107,10013,cilantro,cilantro,1.4,g,pantry,2026-06-08,2026-06-16,2,,0.9
+108,10013,cooking spray,cooking spray,1.7,pack,pantry,2026-06-06,2026-07-05,21,,0.2
+109,10013,cream of chicken soup,cream of chicken soup,1.3,cup,fridge,2026-06-08,2026-06-28,14,,0.2
+110,10013,beef broth,beef broth,2.1,g,pantry,2026-05-31,2026-06-14,0,,1.0
+111,10013,corn,corn,1.9,piece,fridge,2026-06-05,2026-06-17,3,,0.7
+112,10013,dark brown sugar,dark brown sugar,1.1,pack,pantry,2026-06-07,2026-07-05,21,,0.2
+113,10013,flour,flour,2.1,pack,freezer,2026-06-11,2026-06-16,2,,0.9
+114,10013,cassava,cassava,2.7,pack,freezer,2026-06-02,2026-06-14,0,,1.0
+115,10013,plantain,plantain,0.5,g,pantry,2026-06-07,2026-07-14,30,,0.2
+116,10014,chiv,chiv,2.6,piece,freezer,2026-06-11,2026-07-14,30,,0.2
+117,10014,sesame oil,sesame oil,2.1,pack,fridge,2026-06-13,2026-06-14,0,,1.0
+118,10014,beef broth,beef broth,1.6,cup,fridge,2026-06-12,2026-06-14,0,,1.0
+119,10014,canola oil,canola oil,2.8,piece,freezer,2026-06-10,2026-06-24,10,,0.5
+120,10014,ground black pepper,black pepper,0.7,piece,pantry,2026-05-31,2026-06-16,2,,0.9
+121,10014,jackfruit,jackfruit,2.2,g,pantry,2026-06-12,2026-06-19,5,,0.7
+122,10014,pandan,pandan,1.3,g,freezer,2026-06-07,2026-06-14,0,,1.0
+123,10015,red bell pepper,red bell pepper,1.4,g,pantry,2026-06-13,2026-06-17,3,,0.7
+124,10015,cabbage,cabbage,1.9,pack,fridge,2026-05-31,2026-06-16,2,,0.9
+125,10015,tomato,tomato,1.5,piece,fridge,2026-06-08,2026-06-17,3,,0.7
+126,10015,ground pepper,pepper,1.9,cup,fridge,2026-05-31,2026-06-19,5,,0.7
+127,10015,mayonnaise,mayonnaise,0.9,bottle,fridge,2026-06-03,2026-07-05,21,,0.2
+128,10015,dry mustard,dry mustard,2.7,piece,fridge,2026-06-07,2026-06-14,0,,1.0
+129,10015,corn,corn,1.9,cup,fridge,2026-06-08,2026-06-19,5,,0.7
+130,10015,crushed red pepper flak,crushed red pepper flak,1.9,piece,pantry,2026-06-10,2026-06-21,7,,0.5
+131,10015,cassava,cassava,1.4,pack,pantry,2026-06-10,2026-07-14,30,,0.2
+132,10015,plantain,plantain,2.4,g,freezer,2026-06-02,2026-06-17,3,,0.7
+133,10016,leek,leek,1.1,g,fridge,2026-06-11,2026-06-17,3,,0.7
+134,10016,extra virgin olive oil,extra virgin olive oil,0.6,g,freezer,2026-06-05,2026-06-19,5,,0.7
+135,10016,chicken broth,chicken broth,1.4,g,pantry,2026-05-31,2026-07-14,30,,0.2
+136,10016,chicken,chicken,1.3,piece,freezer,2026-06-10,2026-06-16,2,,0.9
+137,10016,plantain,plantain,2.3,bottle,freezer,2026-06-13,2026-07-14,30,,0.2
+138,10016,pandan,pandan,2.9,pack,freezer,2026-06-11,2026-07-14,30,,0.2
+139,10017,pecan,pecan,1.5,bottle,freezer,2026-05-31,2026-06-24,10,,0.5
+140,10017,paprika,paprika,1.7,cup,fridge,2026-06-04,2026-06-28,14,,0.2
+141,10017,red onion,red onion,0.6,bottle,freezer,2026-05-31,2026-06-24,10,,0.5
+142,10017,ginger,ginger,2.2,bottle,freezer,2026-06-01,2026-07-05,21,,0.2
+143,10017,lemon juice,lemon juice,0.9,g,pantry,2026-06-12,2026-06-16,2,,0.9
+144,10017,broccoli floret,broccoli floret,0.8,pack,fridge,2026-06-01,2026-06-17,3,,0.7
+145,10017,oregano,oregano,1.0,g,pantry,2026-06-03,2026-06-15,1,,0.9
+146,10017,lime juice,lime juice,2.8,cup,pantry,2026-06-09,2026-07-14,30,,0.2
+147,10017,skinless chicken breast,chicken breast,1.5,piece,freezer,2026-06-07,2026-06-15,1,,0.9
+148,10017,mustard,mustard,2.8,cup,pantry,2026-06-05,2026-06-19,5,,0.7
+149,10017,pandan,pandan,2.5,cup,freezer,2026-06-04,2026-07-14,30,,0.2
+150,10017,cassava,cassava,1.9,bottle,fridge,2026-06-11,2026-06-24,10,,0.5
+151,10018,celery rib,celery rib,2.4,g,freezer,2026-06-02,2026-06-19,5,,0.7
+152,10018,dijon mustard,dijon mustard,1.1,g,fridge,2026-06-03,2026-06-21,7,,0.5
+153,10018,evaporated milk,evaporated milk,1.4,bottle,pantry,2026-06-07,2026-06-19,5,,0.7
+154,10018,miso,miso,1.7,bottle,fridge,2026-06-06,2026-06-19,5,,0.7
+155,10018,tempeh,tempeh,1.7,g,fridge,2026-06-04,2026-07-14,30,,0.2
+156,10019,vanilla,vanilla,1.0,pack,pantry,2026-06-08,2026-06-15,1,,0.9
+157,10019,salsa,salsa,2.6,pack,pantry,2026-06-06,2026-06-24,10,,0.5
+158,10019,paprika,paprika,0.8,cup,fridge,2026-06-03,2026-06-24,10,,0.5
+159,10019,breadcrumb,breadcrumb,2.8,pack,pantry,2026-06-12,2026-06-16,2,,0.9
+160,10019,cooking spray,cooking spray,1.0,pack,pantry,2026-06-03,2026-07-14,30,,0.2
+161,10019,flour tortilla,flour tortilla,2.7,g,fridge,2026-06-04,2026-06-21,7,,0.5
+162,10019,soy sauce,soy sauce,2.7,pack,fridge,2026-06-06,2026-06-28,14,,0.2
+163,10019,whipping cream,whipping cream,2.1,cup,pantry,2026-06-12,2026-06-14,0,,1.0
+164,10019,oregano,oregano,1.9,bottle,freezer,2026-06-01,2026-07-05,21,,0.2
+165,10019,chili powder,chili powder,1.8,bottle,pantry,2026-06-03,2026-06-17,3,,0.7
+166,10019,pandan,pandan,2.3,pack,freezer,2026-06-07,2026-06-15,1,,0.9
+167,10019,jackfruit,jackfruit,2.1,g,freezer,2026-06-03,2026-06-21,7,,0.5
+168,10020,pecan,pecan,0.6,pack,freezer,2026-06-02,2026-06-19,5,,0.7
+169,10020,celery,celery,1.3,bottle,freezer,2026-06-07,2026-06-24,10,,0.5
+170,10020,molass,molass,1.1,bottle,freezer,2026-06-13,2026-06-14,0,,1.0
+171,10020,tomato sauce,tomato sauce,2.3,piece,fridge,2026-05-31,2026-06-28,14,,0.2
+172,10020,green bell pepper,green bell pepper,2.0,g,freezer,2026-06-05,2026-07-14,30,,0.2
+173,10020,clove,clove,3.0,cup,fridge,2026-06-06,2026-06-19,5,,0.7
+174,10020,breadcrumb,breadcrumb,1.8,pack,freezer,2026-06-11,2026-06-16,2,,0.9
+175,10020,wheat flour,wheat flour,1.9,g,pantry,2026-06-07,2026-06-14,0,,1.0
+176,10020,cinnamon,cinnamon,0.5,pack,pantry,2026-06-04,2026-06-16,2,,0.9
+177,10020,mushroom,mushroom,2.8,bottle,fridge,2026-06-13,2026-06-16,2,,0.9
+178,10020,tempeh,tempeh,2.0,piece,freezer,2026-06-01,2026-06-14,0,,1.0
+179,10020,pandan,pandan,1.9,cup,freezer,2026-06-01,2026-06-28,14,,0.2
+180,10021,cream,cream,0.8,piece,pantry,2026-06-09,2026-06-24,10,,0.5
+181,10021,yellow onion,yellow onion,1.4,piece,pantry,2026-06-06,2026-06-28,14,,0.2
+182,10021,Penne Rigate No. 73 Durum Wheat Semolina Pasta,pasta,0.7,piece,fridge,2026-06-05,2026-06-28,14,8076802085738,0.2
+183,10021,kosher salt,kosher salt,1.2,cup,fridge,2026-06-05,2026-06-16,2,,0.9
+184,10021,cinnamon stick,cinnamon stick,2.1,bottle,freezer,2026-06-13,2026-06-15,1,,0.9
+185,10021,garlic powder,garlic powder,1.0,cup,freezer,2026-06-07,2026-07-14,30,,0.2
+186,10021,buttermilk,buttermilk,2.7,bottle,freezer,2026-06-09,2026-07-05,21,,0.2
+187,10021,tempeh,tempeh,1.4,g,fridge,2026-06-03,2026-06-28,14,,0.2
+188,10021,plantain,plantain,0.8,bottle,pantry,2026-06-02,2026-07-14,30,,0.2
+189,10022,turmeric,turmeric,1.5,cup,pantry,2026-06-02,2026-06-17,3,,0.7
+190,10022,egg yolk,egg yolk,2.0,piece,freezer,2026-06-07,2026-06-16,2,,0.9
+191,10022,dry mustard,dry mustard,1.4,piece,freezer,2026-06-07,2026-07-05,21,,0.2
+192,10022,apple,apple,1.5,bottle,fridge,2026-06-01,2026-06-24,10,,0.5
+193,10022,warm water,warm water,1.9,pack,pantry,2026-06-11,2026-06-28,14,,0.2
+194,10022,red bell pepper,red bell pepper,1.4,pack,freezer,2026-06-09,2026-06-19,5,,0.7
+195,10022,sweetened condensed milk,sweetened condensed milk,0.8,g,freezer,2026-05-31,2026-06-16,2,,0.9
+196,10022,sea salt,sea salt,2.9,cup,freezer,2026-06-01,2026-06-28,14,,0.2
+197,10022,cilantro,cilantro,2.5,bottle,pantry,2026-06-05,2026-06-17,3,,0.7
+198,10022,pasta,pasta,0.9,cup,freezer,2026-06-02,2026-07-14,30,,0.2
+199,10022,miso,miso,1.7,bottle,fridge,2026-05-31,2026-06-15,1,,0.9
+200,10022,kimchi,kimchi,1.2,piece,fridge,2026-06-12,2026-06-24,10,,0.5
+201,10023,cayenne,cayenne,2.4,piece,freezer,2026-06-07,2026-06-17,3,,0.7
+202,10023,lean ground beef,lean ground beef,0.9,g,pantry,2026-06-09,2026-06-24,10,,0.5
+203,10023,almond extract,almond extract,2.5,piece,fridge,2026-06-03,2026-07-14,30,,0.2
+204,10023,miso,miso,2.6,g,pantry,2026-06-05,2026-06-17,3,,0.7
+205,10023,plantain,plantain,0.9,cup,freezer,2026-06-01,2026-06-16,2,,0.9
+206,10024,buttermilk,buttermilk,1.3,g,fridge,2026-06-06,2026-07-14,30,,0.2
+207,10024,turmeric,turmeric,1.0,cup,fridge,2026-06-05,2026-06-14,0,,1.0
+208,10024,raisin,raisin,2.3,cup,fridge,2026-06-09,2026-06-19,5,,0.7
+209,10024,peanut oil,peanut oil,0.5,g,fridge,2026-06-12,2026-06-17,3,,0.7
+210,10024,jackfruit,jackfruit,2.5,pack,pantry,2026-06-07,2026-06-21,7,,0.5
+211,10024,kimchi,kimchi,2.5,piece,freezer,2026-06-06,2026-06-21,7,,0.5
+212,10025,cooking spray,cooking spray,2.9,bottle,freezer,2026-06-04,2026-06-17,3,,0.7
+213,10025,shortening,shortening,0.8,bottle,freezer,2026-06-07,2026-07-05,21,,0.2
+214,10025,wheat flour,wheat flour,2.3,pack,pantry,2026-06-03,2026-06-21,7,,0.5
+215,10025,pandan,pandan,1.9,bottle,fridge,2026-06-11,2026-06-15,1,,0.9
+216,10025,kimchi,kimchi,1.8,bottle,fridge,2026-06-03,2026-06-21,7,,0.5
+217,10026,mustard,mustard,0.9,piece,pantry,2026-06-13,2026-07-05,21,,0.2
+218,10026,brown sugar,brown sugar,2.0,cup,freezer,2026-06-01,2026-06-17,3,,0.7
+219,10026,coconut,coconut,0.7,piece,fridge,2026-06-03,2026-06-28,14,,0.2
+220,10026,garlic powder,garlic powder,0.5,pack,fridge,2026-05-31,2026-06-21,7,,0.5
+221,10026,balsamic vinegar,balsamic vinegar,2.9,cup,freezer,2026-06-07,2026-06-17,3,,0.7
+222,10026,cabbage,cabbage,1.8,g,freezer,2026-06-06,2026-06-21,7,,0.5
+223,10026,salsa,salsa,1.9,cup,pantry,2026-06-05,2026-06-17,3,,0.7
+224,10026,parsley,parsley,1.3,pack,freezer,2026-06-10,2026-06-14,0,,1.0
+225,10026,heavy cream,heavy cream,0.5,piece,fridge,2026-06-02,2026-06-24,10,,0.5
+226,10026,miso,miso,1.1,bottle,pantry,2026-06-03,2026-06-21,7,,0.5
+227,10026,pandan,pandan,2.1,pack,fridge,2026-06-01,2026-06-19,5,,0.7
+228,10027,pasta,pasta,2.4,pack,pantry,2026-06-07,2026-06-14,0,,1.0
+229,10027,apple juice,apple juice,0.8,g,fridge,2026-06-03,2026-06-19,5,,0.7
+230,10027,tempeh,tempeh,2.4,cup,freezer,2026-06-13,2026-06-17,3,,0.7
+231,10027,kimchi,kimchi,1.9,cup,pantry,2026-06-06,2026-06-28,14,,0.2
+232,10028,onion powder,onion powder,1.8,pack,pantry,2026-06-12,2026-06-17,3,,0.7
+233,10028,white wine,white wine,1.4,pack,fridge,2026-06-11,2026-07-05,21,,0.2
+234,10028,mushroom,mushroom,0.9,cup,pantry,2026-06-09,2026-07-05,21,,0.2
+235,10028,black oliv,black oliv,1.0,cup,fridge,2026-06-03,2026-07-05,21,,0.2
+236,10028,confectioners sugar,confectioners sugar,2.7,cup,freezer,2026-06-07,2026-06-28,14,,0.2
+237,10028,molass,molass,2.2,bottle,fridge,2026-06-09,2026-06-14,0,,1.0
+238,10028,sea salt,sea salt,2.7,cup,pantry,2026-06-08,2026-06-15,1,,0.9
+239,10028,red onion,red onion,2.4,cup,freezer,2026-06-01,2026-07-05,21,,0.2
+240,10028,flour,flour,2.1,g,pantry,2026-06-01,2026-07-14,30,,0.2
+241,10028,asparagu,asparagu,1.2,bottle,fridge,2026-06-10,2026-06-21,7,,0.5
+242,10028,monterey jack cheese,monterey jack cheese,2.2,piece,pantry,2026-06-01,2026-06-21,7,,0.5
+243,10028,plantain,plantain,0.8,bottle,pantry,2026-06-11,2026-06-16,2,,0.9
+244,10028,cassava,cassava,1.0,piece,fridge,2026-06-05,2026-07-05,21,,0.2
+245,10029,yellow onion,yellow onion,2.1,g,pantry,2026-06-02,2026-06-16,2,,0.9
+246,10029,sesame oil,sesame oil,2.5,pack,freezer,2026-06-11,2026-06-15,1,,0.9
+247,10029,ginger,ginger,0.9,bottle,freezer,2026-06-07,2026-07-14,30,,0.2
+248,10029,cheese,cheese,1.1,pack,pantry,2026-06-05,2026-06-24,10,,0.5
+249,10029,onion,onion,1.7,g,freezer,2026-06-13,2026-07-14,30,,0.2
+250,10029,coconut,coconut,2.8,bottle,pantry,2026-06-09,2026-07-05,21,,0.2
+251,10029,onion powder,onion powder,1.9,piece,fridge,2026-06-13,2026-06-21,7,,0.5
+252,10029,tomato paste,tomato paste,2.9,cup,pantry,2026-06-04,2026-06-15,1,,0.9
+253,10029,red pepper,red pepper,1.8,piece,freezer,2026-06-02,2026-06-16,2,,0.9
+254,10029,all-purpose flour,all-purpose flour,1.8,bottle,fridge,2026-06-05,2026-06-28,14,,0.2
+255,10029,kimchi,kimchi,2.1,cup,pantry,2026-06-10,2026-06-15,1,,0.9
+256,10029,cassava,cassava,1.3,cup,freezer,2026-06-01,2026-07-05,21,,0.2
+257,10030,salsa,salsa,0.8,pack,freezer,2026-06-04,2026-06-17,3,,0.7
+258,10030,cider vinegar,cider vinegar,0.7,bottle,fridge,2026-06-12,2026-06-19,5,,0.7
+259,10030,salt,salt,0.5,pack,pantry,2026-06-01,2026-06-19,5,,0.7
+260,10030,cooking spray,cooking spray,0.5,cup,freezer,2026-06-03,2026-06-16,2,,0.9
+261,10030,cauliflower,cauliflower,2.3,pack,fridge,2026-06-09,2026-06-24,10,,0.5
+262,10030,carrot,carrot,2.3,pack,freezer,2026-06-13,2026-07-14,30,,0.2
+263,10030,cumin,cumin,2.6,cup,pantry,2026-06-07,2026-06-28,14,,0.2
+264,10030,pandan,pandan,1.5,pack,fridge,2026-06-10,2026-07-05,21,,0.2
+265,10030,miso,miso,2.8,piece,freezer,2026-06-04,2026-06-15,1,,0.9
+266,10031,dark brown sugar,dark brown sugar,2.3,bottle,fridge,2026-06-12,2026-06-15,1,,0.9
+267,10031,skinless chicken breast halv,chicken breast halv,1.0,piece,pantry,2026-06-08,2026-07-14,30,,0.2
+268,10031,evaporated milk,evaporated milk,1.3,cup,fridge,2026-06-01,2026-06-17,3,,0.7
+269,10031,vinegar,vinegar,2.7,pack,pantry,2026-06-02,2026-06-17,3,,0.7
+270,10031,salt freshly ground black pepper,salt freshly ground black pepper,2.0,cup,pantry,2026-06-12,2026-06-17,3,,0.7
+271,10031,tabasco sauce,tabasco sauce,2.8,pack,fridge,2026-06-11,2026-06-24,10,,0.5
+272,10031,chili powder,chili powder,0.8,g,pantry,2026-06-07,2026-06-16,2,,0.9
+273,10031,miso,miso,1.3,cup,fridge,2026-06-09,2026-06-21,7,,0.5
+274,10031,pandan,pandan,0.8,pack,pantry,2026-06-13,2026-07-14,30,,0.2
+275,10032,coconut,coconut,0.9,piece,pantry,2026-06-11,2026-07-14,30,,0.2
+276,10032,white pepper,white pepper,2.9,cup,pantry,2026-06-06,2026-06-17,3,,0.7
+277,10032,walnut,walnut,1.6,g,pantry,2026-06-08,2026-06-16,2,,0.9
+278,10032,red onion,red onion,1.8,g,freezer,2026-06-11,2026-07-14,30,,0.2
+279,10032,baking soda,baking soda,2.2,g,freezer,2026-05-31,2026-06-16,2,,0.9
+280,10032,butter,butter,0.6,piece,fridge,2026-06-10,2026-06-16,2,,0.9
+281,10032,egg white,egg white,1.2,g,pantry,2026-06-11,2026-07-14,30,,0.2
+282,10032,skinless chicken breast,chicken breast,0.6,piece,freezer,2026-06-05,2026-06-17,3,,0.7
+283,10032,cream of mushroom soup,cream of mushroom soup,1.6,g,pantry,2026-06-11,2026-06-21,7,,0.5
+284,10032,miso,miso,2.8,pack,fridge,2026-06-09,2026-07-05,21,,0.2
+285,10032,jackfruit,jackfruit,2.9,piece,fridge,2026-06-01,2026-06-28,14,,0.2
+286,10033,tomato,tomato,0.8,g,fridge,2026-06-08,2026-06-24,10,,0.5
+287,10033,allspice,allspice,2.5,bottle,fridge,2026-06-10,2026-07-05,21,,0.2
+288,10033,boiling water,boiling water,2.6,bottle,freezer,2026-06-02,2026-07-14,30,,0.2
+289,10033,lean ground beef,lean ground beef,2.8,cup,pantry,2026-06-07,2026-06-15,1,,0.9
+290,10033,jackfruit,jackfruit,1.4,piece,pantry,2026-06-13,2026-06-16,2,,0.9
+291,10033,miso,miso,2.7,bottle,pantry,2026-05-31,2026-06-16,2,,0.9
+292,10034,cinnamon stick,cinnamon stick,2.9,cup,fridge,2026-06-05,2026-07-05,21,,0.2
+293,10034,lemon,lemon,1.6,pack,pantry,2026-06-12,2026-06-24,10,,0.5
+294,10034,kosher salt,kosher salt,0.6,bottle,fridge,2026-06-06,2026-06-28,14,,0.2
+295,10034,dill,dill,1.7,g,fridge,2026-06-02,2026-06-19,5,,0.7
+296,10034,yellow onion,yellow onion,1.7,cup,pantry,2026-06-02,2026-06-19,5,,0.7
+297,10034,vinegar,vinegar,2.2,bottle,pantry,2026-06-03,2026-07-14,30,,0.2
+298,10034,cabbage,cabbage,1.9,g,pantry,2026-06-06,2026-07-14,30,,0.2
+299,10034,vanilla extract,vanilla extract,1.2,bottle,pantry,2026-06-13,2026-07-05,21,,0.2
+300,10034,red bell pepper,red bell pepper,1.4,piece,freezer,2026-06-04,2026-06-24,10,,0.5
+301,10034,salt freshly ground black pepper,salt freshly ground black pepper,2.0,g,fridge,2026-06-13,2026-06-21,7,,0.5
+302,10034,pandan,pandan,2.0,piece,freezer,2026-06-08,2026-06-21,7,,0.5
+303,10034,jackfruit,jackfruit,1.4,piece,pantry,2026-06-12,2026-06-24,10,,0.5
+304,10035,monterey jack cheese,monterey jack cheese,1.8,cup,pantry,2026-06-13,2026-07-14,30,,0.2
+305,10035,salt and pepper,salt and pepper,1.7,g,pantry,2026-06-05,2026-06-21,7,,0.5
+306,10035,cilantro,cilantro,1.4,piece,fridge,2026-06-01,2026-06-19,5,,0.7
+307,10035,salt pepper,salt pepper,2.9,bottle,freezer,2026-06-13,2026-06-19,5,,0.7
+308,10035,whipping cream,whipping cream,2.2,cup,freezer,2026-05-31,2026-06-14,0,,1.0
+309,10035,salt,salt,1.5,piece,freezer,2026-06-09,2026-06-17,3,,0.7
+310,10035,worcestershire sauce,worcestershire sauce,2.6,pack,fridge,2026-06-05,2026-06-15,1,,0.9
+311,10035,cayenne pepper,cayenne pepper,1.3,g,pantry,2026-06-07,2026-06-14,0,,1.0
+312,10035,miso,miso,2.8,piece,fridge,2026-06-10,2026-06-19,5,,0.7
+313,10035,jackfruit,jackfruit,1.2,cup,fridge,2026-06-01,2026-06-24,10,,0.5
+314,10036,green pepper,green pepper,1.0,pack,fridge,2026-06-13,2026-06-16,2,,0.9
+315,10036,green onion,green onion,1.7,cup,freezer,2026-06-11,2026-06-19,5,,0.7
+316,10036,tomato sauce,tomato sauce,2.3,pack,pantry,2026-06-13,2026-06-28,14,,0.2
+317,10036,lime juice,lime juice,2.6,g,fridge,2026-06-06,2026-06-28,14,,0.2
+318,10036,margarine,margarine,1.0,piece,fridge,2026-06-08,2026-06-15,1,,0.9
+319,10036,avocado,avocado,2.4,piece,fridge,2026-05-31,2026-06-16,2,,0.9
+320,10036,carrot,carrot,1.0,cup,freezer,2026-06-03,2026-07-14,30,,0.2
+321,10036,celery rib,celery rib,1.0,cup,freezer,2026-06-01,2026-07-05,21,,0.2
+322,10036,boiling water,boiling water,2.2,piece,pantry,2026-06-01,2026-06-17,3,,0.7
+323,10036,cassava,cassava,3.0,cup,freezer,2026-06-09,2026-06-14,0,,1.0
+324,10036,tempeh,tempeh,2.8,cup,freezer,2026-06-08,2026-06-24,10,,0.5
+325,10037,cauliflower,cauliflower,1.2,pack,fridge,2026-06-10,2026-07-14,30,,0.2
+326,10037,corn,corn,0.8,pack,fridge,2026-06-08,2026-06-14,0,,1.0
+327,10037,vanilla extract,vanilla extract,2.3,bottle,pantry,2026-05-31,2026-06-24,10,,0.5
+328,10037,cream,cream,1.7,pack,fridge,2026-06-09,2026-07-05,21,,0.2
+329,10037,basil,basil,2.0,pack,freezer,2026-06-04,2026-07-05,21,,0.2
+330,10037,italian seasoning,italian seasoning,1.8,pack,fridge,2026-06-02,2026-06-17,3,,0.7
+331,10037,worcestershire sauce,worcestershire sauce,0.7,pack,freezer,2026-06-08,2026-07-14,30,,0.2
+332,10037,plantain,plantain,2.1,piece,pantry,2026-06-12,2026-06-28,14,,0.2
+333,10037,miso,miso,0.6,piece,pantry,2026-06-02,2026-06-28,14,,0.2
+334,10038,hot sauce,hot sauce,2.7,bottle,fridge,2026-06-13,2026-06-16,2,,0.9
+335,10038,baking soda,baking soda,2.6,piece,fridge,2026-06-09,2026-07-14,30,,0.2
+336,10038,evaporated milk,evaporated milk,2.3,piece,fridge,2026-06-05,2026-06-24,10,,0.5
+337,10038,cinnamon stick,cinnamon stick,1.4,cup,freezer,2026-06-03,2026-06-19,5,,0.7
+338,10038,milk,milk,0.5,piece,pantry,2026-06-06,2026-06-15,1,,0.9
+339,10038,plantain,plantain,3.0,bottle,freezer,2026-06-01,2026-06-17,3,,0.7
+340,10038,kimchi,kimchi,1.1,piece,freezer,2026-05-31,2026-07-05,21,,0.2
+341,10039,black oliv,black oliv,1.5,piece,fridge,2026-06-08,2026-06-15,1,,0.9
+342,10039,ketchup,ketchup,0.6,g,fridge,2026-06-07,2026-06-19,5,,0.7
+343,10039,skinless chicken breast halv,chicken breast halv,1.7,bottle,fridge,2026-06-04,2026-07-14,30,,0.2
+344,10039,scallion,scallion,0.7,pack,pantry,2026-06-12,2026-06-24,10,,0.5
+345,10039,rice,rice,1.5,g,fridge,2026-06-07,2026-07-05,21,,0.2
+346,10039,red wine vinegar,red wine vinegar,2.9,cup,freezer,2026-06-09,2026-06-14,0,,1.0
+347,10039,jackfruit,jackfruit,2.1,g,freezer,2026-06-01,2026-06-17,3,,0.7
+348,10039,miso,miso,1.6,bottle,pantry,2026-06-04,2026-06-19,5,,0.7
+349,10040,broccoli floret,broccoli floret,2.6,bottle,fridge,2026-05-31,2026-06-21,7,,0.5
+350,10040,ground black pepper,black pepper,2.0,cup,freezer,2026-06-12,2026-06-17,3,,0.7
+351,10040,broccoli,broccoli,0.7,cup,fridge,2026-06-04,2026-06-28,14,,0.2
+352,10040,cranberry,cranberry,2.7,cup,pantry,2026-06-07,2026-06-14,0,,1.0
+353,10040,chicken broth,chicken broth,0.6,bottle,pantry,2026-06-13,2026-06-16,2,,0.9
+354,10040,miso,miso,2.2,bottle,fridge,2026-06-12,2026-06-24,10,,0.5
+355,10040,tempeh,tempeh,1.5,bottle,pantry,2026-06-09,2026-06-14,0,,1.0
