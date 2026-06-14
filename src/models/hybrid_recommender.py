@@ -6,6 +6,7 @@ from dataclasses import dataclass
 
 import pandas as pd
 
+from src.cold_start import expand_fridge_ingredients
 from src.models.collaborative_filtering import CollaborativeFilteringRecommender
 from src.models.content_based import ContentBasedRecommender, _split_pipe
 
@@ -26,6 +27,7 @@ class HybridRecommender:
     def _fridge_context(self, user_id: int) -> tuple[set[str], dict[str, float]]:
         items = self.fridge_df[self.fridge_df["user_id"] == user_id]
         ingredients = set(items["cleaned_ingredient_name"].astype(str))
+        ingredients = expand_fridge_ingredients(ingredients)
         expiry_map = dict(
             zip(items["cleaned_ingredient_name"], items["expiry_priority_score"])
         )

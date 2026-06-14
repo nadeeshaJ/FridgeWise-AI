@@ -7,8 +7,9 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+from src.cold_start import get_cold_start_substitutes
 from src.preprocessing.config_loader import load_config, resolve_path
-from src.preprocessing.ingredient_utils import clean_ingredient_name, get_cold_start_substitutes
+from src.preprocessing.ingredient_utils import clean_ingredient_name
 
 
 def _split_pipe(value: str) -> list[str]:

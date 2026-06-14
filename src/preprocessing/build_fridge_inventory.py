@@ -9,12 +9,8 @@ from pathlib import Path
 import pandas as pd
 
 from src.preprocessing.config_loader import load_config, resolve_path
-from src.preprocessing.ingredient_utils import (
-    COLD_START_MAPPINGS,
-    clean_ingredient_name,
-    compute_expiry_priority_score,
-    ingredients_to_string,
-)
+from src.cold_start.mappings import COLD_START_MAPPINGS
+from src.preprocessing.ingredient_utils import clean_ingredient_name, compute_expiry_priority_score
 
 
 def _top_recipe_ingredients(recipes_df: pd.DataFrame, limit: int = 200) -> list[str]:

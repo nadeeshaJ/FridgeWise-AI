@@ -111,6 +111,7 @@ FridgeWise-AI/
 │   │   ├── content_based.py         # TF-IDF + ingredient overlap baseline
 │   │   ├── collaborative_filtering.py
 │   │   └── hybrid_recommender.py
+│   ├── cold_start/                  # Cold-start ingredient mappings & resolver
 │   └── evaluation/
 │       ├── metrics.py               # MAP, NDCG, Precision, Recall
 │       └── evaluate.py
@@ -264,6 +265,24 @@ For barcode scanning on Android, ensure `AndroidManifest.xml` includes camera pe
 
 Demo users: `10001`–`10040` (synthetic fridges with mixed expiry dates and cold-start ingredients).
 
+### 6. Docker (optional)
+
+Run the API in a container without a local Python setup:
+
+```bash
+docker compose up --build
+```
+
+API available at `http://localhost:8000`. Processed data is mounted read-only from `data/processed/`.
+
+### Utility scripts
+
+| Script | Purpose |
+|--------|---------|
+| `scripts/log_unmatched_ingredients.py` | Report fridge ingredients with weak recipe/product matches |
+| `scripts/refresh_open_food_facts.py` | Re-fetch Open Food Facts product cache |
+| `scripts/plot_evaluation_results.py` | Export evaluation charts as PNG |
+
 ---
 
 ## Data Pipeline
@@ -338,7 +357,7 @@ Foundation for all matching:
 - Lowercase, strip punctuation, remove quantity prefixes
 - Synonym dictionary (`cheddar cheese` → `cheese`)
 - Simple plural handling (`tomatoes` → `tomato`)
-- Cold-start mappings (`tempeh` → `tofu`, `cassava` → `potato`)
+- Cold-start mappings (`tempeh` → `tofu`, `cassava` → `potato`) in `src/cold_start/`
 
 ---
 
@@ -525,6 +544,8 @@ evaluation:
 | Ingredient matching | Complete | 100+ synonym mappings, cold-start substitutes |
 | Unit tests | Complete | `pytest tests/` |
 | Evaluation charts | Complete | `scripts/plot_evaluation_results.py`, `notebooks/` |
+| Cold-start module | Complete | `src/cold_start/` |
+| Docker & CI | Complete | `docker compose up`, GitHub Actions on push |
 
 ---
 

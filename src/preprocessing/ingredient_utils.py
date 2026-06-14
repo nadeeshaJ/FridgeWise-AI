@@ -176,28 +176,6 @@ SYNONYM_MAP: dict[str, str] = {
     "rice vinegar": "vinegar",
 }
 
-# Cold-start: unfamiliar ingredient → similar known ingredients
-COLD_START_MAPPINGS: dict[str, list[str]] = {
-    "cassava": ["potato", "yam"],
-    "tempeh": ["tofu"],
-    "jackfruit": ["mushroom", "vegetable"],
-    "miso": ["soy sauce", "fermented seasoning"],
-    "pandan": ["vanilla", "coconut"],
-    "kimchi": ["cabbage", "fermented vegetable"],
-    "plantain": ["banana", "potato"],
-    "quinoa": ["rice", "cereal"],
-    "couscous": ["pasta", "rice"],
-    "halloumi": ["cheese"],
-    "nutritional yeast": ["cheese", "seasoning"],
-    "seitan": ["tofu", "protein"],
-    "gochujang": ["chili", "soy sauce"],
-    "harissa": ["chili", "spice"],
-    "tahini": ["sesame", "oil"],
-    "aquafaba": ["egg"],
-    "zucchini": ["courgette", "vegetable"],
-    "aubergine": ["eggplant", "vegetable"],
-}
-
 # Product name keywords → generic ingredient
 PRODUCT_INGREDIENT_MAP: dict[str, str] = {
     "pasta": "pasta",
@@ -357,12 +335,6 @@ def map_product_to_ingredient(product_name: str, categories: str = "") -> str:
         if phrase in combined:
             return ingredient
     return clean_ingredient_name(product_name.split(",")[0])
-
-
-def get_cold_start_substitutes(ingredient: str) -> list[str]:
-    """Return substitute ingredients for cold-start unfamiliar items."""
-    key = clean_ingredient_name(ingredient)
-    return COLD_START_MAPPINGS.get(key, [])
 
 
 def extract_tags_from_list(raw_tags: str | list | None, keyword_map: dict[str, list[str]]) -> list[str]:

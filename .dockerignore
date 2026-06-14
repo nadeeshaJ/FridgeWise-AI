@@ -1,0 +1,14 @@
+.git
+.gitignore
+__pycache__
+*.pyc
+.venv
+venv
+.env
+data/raw
+data/cache
+*.db
+flutter_app
+notebooks/.ipynb_checkpoints
+.pytest_cache
+terminals

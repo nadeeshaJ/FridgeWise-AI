@@ -1,11 +1,11 @@
 """Unit tests for ingredient cleaning and mapping."""
 
+from src.cold_start import get_cold_start_substitutes
 from src.preprocessing.ingredient_utils import (
     apply_synonyms,
     clean_ingredient_name,
     clean_ingredient_list,
     compute_expiry_priority_score,
-    get_cold_start_substitutes,
     map_product_to_ingredient,
     normalize_text,
 )
