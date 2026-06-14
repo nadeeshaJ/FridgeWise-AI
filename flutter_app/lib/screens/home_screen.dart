@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../services/api_service.dart';
+import '../widgets/error_view.dart' show friendlyError;
 import 'barcode_screen.dart';
 import 'fridge_screen.dart';
 import 'recommendations_screen.dart';
@@ -34,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     } catch (e) {
       setState(() {
-        _error = e.toString();
+        _error = friendlyError(e);
         _loading = false;
       });
     }
@@ -58,7 +59,13 @@ class _HomeScreenState extends State<HomeScreen> {
               Text('Cannot reach API. Start backend:\npython api/main.py',
                   textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodyLarge),
               const SizedBox(height: 8),
-              Text(_error!, style: const TextStyle(color: Colors.red)),
+              Text(_error!, style: TextStyle(color: Colors.red.shade700)),
+              const SizedBox(height: 16),
+              FilledButton.icon(
+                onPressed: _loadUsers,
+                icon: const Icon(Icons.refresh),
+                label: const Text('Retry'),
+              ),
             ],
           ),
         ),
@@ -109,10 +116,12 @@ class _HomeScreenState extends State<HomeScreen> {
             _NavCard(
               icon: Icons.qr_code_scanner,
               title: 'Barcode / Nutrition',
-              subtitle: 'Look up Open Food Facts products',
+              subtitle: 'Scan or enter a barcode, add to fridge',
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => const BarcodeScreen()),
+                MaterialPageRoute(
+                  builder: (_) => BarcodeScreen(userId: _selectedUser!),
+                ),
               ),
             ),
           ],

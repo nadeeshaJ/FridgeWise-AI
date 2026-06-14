@@ -223,19 +223,30 @@ API runs at `http://localhost:8000`. Endpoints:
 | GET | `/health` | Service health check |
 | GET | `/demo-users` | List available demo user IDs |
 | GET | `/users/{id}/fridge` | Fridge inventory for a user |
+| POST | `/users/{id}/fridge/items` | Add a fridge item |
+| PUT | `/users/{id}/fridge/items/{inventory_id}` | Update a fridge item |
+| DELETE | `/users/{id}/fridge/items/{inventory_id}` | Remove a fridge item |
+| POST | `/users/{id}/fridge/from-barcode` | Add item from Open Food Facts barcode |
 | GET | `/users/{id}/recommendations?top_k=10` | Hybrid recipe recommendations |
 | GET | `/recipes/{id}` | Full recipe details |
 | GET | `/products/{barcode}` | Open Food Facts product lookup |
 
+Fridge edits are stored in memory for the running API session and immediately affect hybrid recommendations.
+
 ### 5. Run the Flutter app
+
+First-time setup (generates Android/iOS platform folders):
 
 ```bash
 cd flutter_app
+flutter create . --project-name fridge_wise_app
 flutter pub get
 flutter run
 ```
 
-Use `http://10.0.2.2:8000` as the API base URL on Android emulator; use your machine's LAN IP on a physical device.
+The app auto-selects `http://10.0.2.2:8000` on Android emulator and `http://127.0.0.1:8000` on iOS/desktop. Use your machine's LAN IP on a physical device.
+
+For barcode scanning on Android, ensure `AndroidManifest.xml` includes camera permission (added automatically by `mobile_scanner` after `flutter pub get`).
 
 Demo users: `10001`–`10040` (synthetic fridges with mixed expiry dates and cold-start ingredients).
 
@@ -451,11 +462,11 @@ The Flutter app (`flutter_app/`) is a functional prototype connected to the Fast
 
 | Screen | Description |
 |--------|-------------|
-| **Home** | Select a demo user |
-| **Fridge Inventory** | View ingredients, quantities, expiry dates (colour-coded urgency) |
-| **Recommendations** | Top hybrid-ranked recipes with match % and scores |
+| **Home** | Select a demo user; retry if API is offline |
+| **Fridge Inventory** | View, add, edit, and delete items; pull-to-refresh; colour-coded expiry urgency |
+| **Recommendations** | Top hybrid-ranked recipes with match % and scores; pull-to-refresh |
 | **Recipe Detail** | Ingredients, steps, cook time, explanation of why it was recommended |
-| **Barcode / Nutrition** | Enter a barcode to look up product nutrition and allergens |
+| **Barcode / Nutrition** | Scan or enter a barcode, view nutrition/allergens, add product to fridge |
 
 ---
 
@@ -495,8 +506,8 @@ evaluation:
 | Collaborative filtering | Complete | KNN k=40 selected via validation tuning |
 | Hybrid model | Complete | CF-first rank fusion for offline eval; weighted formula for app |
 | Offline evaluation | Complete | MAP@5 0.55 (hybrid), NDCG@5 0.56 on test split |
-| FastAPI backend | Complete | Add auth, caching |
-| Flutter app | Prototype | Barcode camera, manual ingredient entry |
+| FastAPI backend | Complete | Fridge CRUD, barcode add, tuned CF loading |
+| Flutter app | Complete | Fridge CRUD, barcode scan, error handling |
 | Ingredient matching | Ongoing | Expand synonym dictionary |
 
 ---
