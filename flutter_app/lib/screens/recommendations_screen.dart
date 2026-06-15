@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../services/api_service.dart';
+import '../widgets/api_scope.dart';
 import '../widgets/error_view.dart';
 import 'recipe_detail_screen.dart';
 
@@ -14,7 +14,6 @@ class RecommendationsScreen extends StatefulWidget {
 }
 
 class _RecommendationsScreenState extends State<RecommendationsScreen> {
-  final ApiService _api = ApiService();
   List<dynamic> _recs = [];
   bool _loading = true;
   String? _error;
@@ -31,7 +30,7 @@ class _RecommendationsScreenState extends State<RecommendationsScreen> {
       _error = null;
     });
     try {
-      final recs = await _api.getRecommendations(widget.userId);
+      final recs = await ApiScope.apiOf(context).getRecommendations(widget.userId);
       if (!mounted) return;
       setState(() {
         _recs = recs;

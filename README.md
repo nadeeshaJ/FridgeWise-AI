@@ -250,7 +250,13 @@ Fridge edits are stored in memory for the running API session and immediately af
 
 ### 5. Run the Flutter app
 
-First-time setup (generates Android/iOS platform folders):
+Generate platform folders (first time only):
+
+```powershell
+.\scripts\setup_flutter.ps1
+```
+
+Or manually:
 
 ```bash
 cd flutter_app
@@ -259,9 +265,21 @@ flutter pub get
 flutter run
 ```
 
-The app auto-selects `http://10.0.2.2:8000` on Android emulator and `http://127.0.0.1:8000` on iOS/desktop. Use your machine's LAN IP on a physical device.
+**Physical device on the same Wi‑Fi:**
 
-For barcode scanning on Android, ensure `AndroidManifest.xml` includes camera permission (added automatically by `mobile_scanner` after `flutter pub get`).
+1. Start the API bound to all interfaces: `.\scripts\run_demo.ps1`
+2. Find your PC IPv4 address: `ipconfig` (e.g. `192.168.1.42`)
+3. In the app, tap the **Settings** gear → choose **Physical device (LAN)** → enter `http://192.168.1.42:8000` → **Test connection** → **Save**
+
+| Environment | Default API URL |
+|-------------|-----------------|
+| Android emulator | `http://10.0.2.2:8000` |
+| iOS simulator / desktop | `http://127.0.0.1:8000` |
+| Physical phone | `http://<your-pc-lan-ip>:8000` |
+
+The app auto-selects the platform default on first launch; saved URLs persist via `shared_preferences`.
+
+For barcode scanning on Android, camera permission is configured in `AndroidManifest.xml` after setup.
 
 Demo users: `10001`–`10040` (synthetic fridges with mixed expiry dates and cold-start ingredients).
 
@@ -540,7 +558,7 @@ evaluation:
 | Hybrid model | Complete | CF-first rank fusion for offline eval; weighted formula for app |
 | Offline evaluation | Complete | MAP@5 0.55 (hybrid), NDCG@5 0.56 on test split |
 | FastAPI backend | Complete | Fridge CRUD, barcode add, tuned CF loading |
-| Flutter app | Complete | Fridge CRUD, barcode scan, error handling |
+| Flutter app | Complete | Platform folders, LAN API settings, physical device support |
 | Ingredient matching | Complete | 100+ synonym mappings, cold-start substitutes |
 | Unit tests | Complete | `pytest tests/` |
 | Evaluation charts | Complete | `scripts/plot_evaluation_results.py`, `notebooks/` |

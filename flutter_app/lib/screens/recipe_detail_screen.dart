@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../services/api_service.dart';
+import '../widgets/api_scope.dart';
 import '../widgets/error_view.dart';
 
 class RecipeDetailScreen extends StatefulWidget {
@@ -18,7 +18,6 @@ class RecipeDetailScreen extends StatefulWidget {
 }
 
 class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
-  final ApiService _api = ApiService();
   Map<String, dynamic>? _recipe;
   bool _loading = true;
   String? _error;
@@ -35,7 +34,7 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
       _error = null;
     });
     try {
-      final recipe = await _api.getRecipe(widget.recipeId);
+      final recipe = await ApiScope.apiOf(context).getRecipe(widget.recipeId);
       if (!mounted) return;
       setState(() {
         _recipe = recipe;

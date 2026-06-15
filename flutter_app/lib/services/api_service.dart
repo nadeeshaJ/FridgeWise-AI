@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 
+import 'api_config.dart';
+
 class ApiException implements Exception {
   ApiException(this.message, {this.statusCode});
 
@@ -14,14 +16,12 @@ class ApiException implements Exception {
 }
 
 class ApiService {
-  ApiService({String? baseUrl}) : baseUrl = baseUrl ?? _defaultBaseUrl();
+  ApiService({String? baseUrl})
+      : baseUrl = ApiConfig.normalizeBaseUrl(baseUrl ?? ApiConfig.platformDefault());
 
   final String baseUrl;
 
-  static String _defaultBaseUrl() {
-    if (Platform.isAndroid) return 'http://10.0.2.2:8000';
-    return 'http://127.0.0.1:8000';
-  }
+  static String defaultBaseUrl() => ApiConfig.platformDefault();
 
   Future<void> checkHealth() async {
     await _get('/health');

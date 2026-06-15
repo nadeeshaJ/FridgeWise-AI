@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../services/api_service.dart';
+import '../widgets/api_scope.dart';
 import '../widgets/error_view.dart';
 
 class FridgeScreen extends StatefulWidget {
@@ -13,7 +13,6 @@ class FridgeScreen extends StatefulWidget {
 }
 
 class _FridgeScreenState extends State<FridgeScreen> {
-  final ApiService _api = ApiService();
   List<dynamic> _items = [];
   bool _loading = true;
   String? _error;
@@ -30,7 +29,8 @@ class _FridgeScreenState extends State<FridgeScreen> {
       _error = null;
     });
     try {
-      final items = await _api.getFridge(widget.userId);
+      final api = ApiScope.apiOf(context);
+      final items = await api.getFridge(widget.userId);
       if (!mounted) return;
       setState(() {
         _items = items;
@@ -147,8 +147,9 @@ class _FridgeScreenState extends State<FridgeScreen> {
     final days = int.tryParse(daysCtrl.text.trim()) ?? 7;
 
     try {
+      final api = ApiScope.apiOf(context);
       if (isEdit) {
-        await _api.updateFridgeItem(
+        await api.updateFridgeItem(
           widget.userId,
           item!['inventory_id'] as int,
           ingredientName: name,
@@ -158,7 +159,7 @@ class _FridgeScreenState extends State<FridgeScreen> {
           daysToExpiry: days,
         );
       } else {
-        await _api.addFridgeItem(
+        await api.addFridgeItem(
           widget.userId,
           ingredientName: name,
           quantity: quantity,
@@ -199,7 +200,8 @@ class _FridgeScreenState extends State<FridgeScreen> {
     if (confirmed != true || !mounted) return;
 
     try {
-      await _api.deleteFridgeItem(widget.userId, item['inventory_id'] as int);
+      final api = ApiScope.apiOf(context);
+      await api.deleteFridgeItem(widget.userId, item['inventory_id'] as int);
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Item removed')),

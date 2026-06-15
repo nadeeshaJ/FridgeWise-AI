@@ -20,6 +20,7 @@ data/cache/
 Thumbs.db
 
 # Legacy AL template entries
+.flutter-sdk/
 .alcache/
 .alpackages/
 .snapshots/

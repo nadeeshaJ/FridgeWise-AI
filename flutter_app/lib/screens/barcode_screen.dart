@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
-import '../services/api_service.dart';
+import '../widgets/api_scope.dart';
 import '../widgets/error_view.dart';
 
 class BarcodeScreen extends StatefulWidget {
@@ -14,7 +14,6 @@ class BarcodeScreen extends StatefulWidget {
 }
 
 class _BarcodeScreenState extends State<BarcodeScreen> {
-  final ApiService _api = ApiService();
   final _controller = TextEditingController(text: '8000500310427');
   Map<String, dynamic>? _product;
   String? _error;
@@ -36,7 +35,7 @@ class _BarcodeScreenState extends State<BarcodeScreen> {
       _product = null;
     });
     try {
-      final product = await _api.getProduct(_controller.text.trim());
+      final product = await ApiScope.apiOf(context).getProduct(_controller.text.trim());
       if (!mounted) return;
       setState(() => _product = product);
     } catch (e) {
@@ -54,7 +53,7 @@ class _BarcodeScreenState extends State<BarcodeScreen> {
       _error = null;
     });
     try {
-      await _api.addFridgeItemFromBarcode(
+      await ApiScope.apiOf(context).addFridgeItemFromBarcode(
         widget.userId,
         barcode: _controller.text.trim(),
       );
